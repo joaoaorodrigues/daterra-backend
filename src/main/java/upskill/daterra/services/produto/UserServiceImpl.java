@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import upskill.daterra.entities.User;
 import upskill.daterra.models.CriarConsumidorModel;
 import upskill.daterra.models.CriarProdutorModel;
-import upskill.daterra.repository.UserRepository;
+import upskill.daterra.repositories.UserRepository;
 
 @Service
 

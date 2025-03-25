@@ -6,12 +6,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityWebConfig {
     @Autowired
     UserAuthenticationProvider userAuthenticationProvider;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
+    }
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -23,7 +30,7 @@ public class SecurityWebConfig {
             auth.requestMatchers("/user", "/user/**").authenticated();
             auth.requestMatchers("/novaTarefa").authenticated();
             auth.requestMatchers("/countries").hasRole("ADMIN");
-            auth.requestMatchers("**").denyAll();
+            auth.requestMatchers("/public/**").permitAll();
         });
         httpSecurity.formLogin(loginConfig -> {
             loginConfig.failureHandler((request, response, exception) -> {
