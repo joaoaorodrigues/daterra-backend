@@ -1,4 +1,4 @@
-package upskill.daterra.services.produto;
+package upskill.daterra.services.user;
 
 import upskill.daterra.entities.User;
 import upskill.daterra.models.CriarConsumidorModel;

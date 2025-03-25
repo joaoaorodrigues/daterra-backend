@@ -4,24 +4,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityWebConfig {
-    @Autowired
-    UserAuthenticationProvider userAuthenticationProvider;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
+    private final UserAuthenticationProvider userAuthenticationProvider;
+
+    // Constructor injection for UserAuthenticationProvider
+    @Autowired
+    public SecurityWebConfig(UserAuthenticationProvider userAuthenticationProvider) {
+        this.userAuthenticationProvider = userAuthenticationProvider;
     }
 
     @Bean
-    protected SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12); // PasswordEncoder bean definition
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(csrfConfigurer -> {
             csrfConfigurer.disable();
         });
@@ -42,7 +46,7 @@ public class SecurityWebConfig {
             loginConfig.usernameParameter("email");
             loginConfig.loginProcessingUrl("/login");
         });
-        httpSecurity.authenticationProvider(userAuthenticationProvider);
+        httpSecurity.authenticationProvider(userAuthenticationProvider); // Injecting UserAuthenticationProvider
         return httpSecurity.build();
     }
 }

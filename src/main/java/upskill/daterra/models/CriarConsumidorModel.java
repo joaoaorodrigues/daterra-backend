@@ -1,7 +1,10 @@
 package upskill.daterra.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import upskill.daterra.entities.Consumidor;
 import upskill.daterra.entities.User;
+
+import java.time.LocalDate;
 
 public class CriarConsumidorModel {
     private String email;
@@ -15,6 +18,16 @@ public class CriarConsumidorModel {
     private String country;
     private String postalCode;
     private String nif;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birthDate;
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
 
     public String getEmail() {
         return email;
@@ -103,15 +116,5 @@ public class CriarConsumidorModel {
     public void setNif(String nif) {
         this.nif = nif;
     }
-
-    public String getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    private String birthDate;
-
 }
+

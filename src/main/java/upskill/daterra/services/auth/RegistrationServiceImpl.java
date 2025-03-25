@@ -10,7 +10,7 @@ import upskill.daterra.entities.Produtor;
 import upskill.daterra.models.CriarConsumidorModel;
 import upskill.daterra.models.CriarProdutorModel;
 import upskill.daterra.repositories.UserRepository;
-import upskill.daterra.services.produto.UserService;
+import upskill.daterra.services.user.UserService;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService {

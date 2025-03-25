@@ -1,6 +1,9 @@
 package upskill.daterra.entities;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -19,6 +22,18 @@ public class User {
     protected String address;
     protected String city;
     protected String country;
+    protected String postalCode;
+    protected String nif;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    protected LocalDate birthDate;
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
 
     public String getConfirmPassword() {
         return confirmPassword;
@@ -75,9 +90,6 @@ public class User {
     public void setNif(String nif) {
         this.nif = nif;
     }
-
-    protected String postalCode;
-    protected String nif;
 
     public String getLastName() {
         return lastName;

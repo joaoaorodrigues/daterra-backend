@@ -12,21 +12,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import upskill.daterra.entities.User;
 import upskill.daterra.repositories.UserRepository;
-import upskill.daterra.services.produto.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class UserAuthenticationProvider implements AuthenticationProvider {
-    @Autowired
-    UserService userService;
 
-    @Autowired
-    UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
+    // Constructor injection for PasswordEncoder and UserRepository
     @Autowired
-    PasswordEncoder passwordEncoder;
+    public UserAuthenticationProvider(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -34,7 +35,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         String password = authentication.getCredentials().toString();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new BadCredentialsException("Invalid username or password"));
-        if(user != null && passwordEncoder.matches(password, user.getPassword())) {
+        if (passwordEncoder.matches(password, user.getPassword())) {
             List<GrantedAuthority> roleList = new ArrayList<>();
             roleList.add(new SimpleGrantedAuthority("ROLE_USER"));
             // Add more roles as needed
@@ -46,6 +47,6 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return authentication.equals(UsernamePasswordAuthenticationToken.class);
+        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }

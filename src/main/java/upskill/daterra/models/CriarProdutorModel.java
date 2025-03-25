@@ -18,7 +18,7 @@ public class CriarProdutorModel {
     private String country;
     private String postalCode;
     private String nif;
-    @DateTimeFormat
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
     private String iban;
 
@@ -116,6 +116,10 @@ public class CriarProdutorModel {
 
     public void setIban(String iban) {
         this.iban = iban;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
     public void setBirthDate(LocalDate birthDate) {
