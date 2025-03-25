@@ -27,7 +27,7 @@ public class RegistrationController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/register/buyer")
+    @PostMapping("/contas/registo")
     public ResponseEntity<String> registerBuyer(@RequestBody CriarConsumidorModel model) {
         Consumidor consumidor = new Consumidor();
         consumidor.setEmail(model.getEmail());
