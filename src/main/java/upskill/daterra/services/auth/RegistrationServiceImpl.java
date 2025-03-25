@@ -57,9 +57,22 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     private void mapDadosConsumidor(CriarConsumidorModel model, Consumidor consumidor) {
+        System.out.println("Mapping Consumidor data:"); // Or use a proper logging framework
+        System.out.println("Email: " + model.getEmail());
+        System.out.println("FirstName: " + model.getFirstName());
+        System.out.println("LastName: " + model.getLastName());
+        System.out.println("Phone: " + model.getPhone());
+        System.out.println("Address: " + model.getAddress());
+        System.out.println("City: " + model.getCity());
+        System.out.println("Country: " + model.getCountry());
+        System.out.println("PostalCode: " + model.getPostalCode());
+        System.out.println("Nif: " + model.getNif());
+        System.out.println("BirthDate: " + model.getBirthDate()); // Add this line
+
         consumidor.setEmail(model.getEmail());
         consumidor.setFirstName(model.getFirstName());
         consumidor.setLastName(model.getLastName());
+        consumidor.setBirthDate(model.getBirthDate());
         consumidor.setPhone(model.getPhone());
         consumidor.setAddress(model.getAddress());
         consumidor.setCity(model.getCity());
@@ -72,6 +85,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         produtor.setEmail(model.getEmail());
         produtor.setFirstName(model.getFirstName());
         produtor.setLastName(model.getLastName());
+        produtor.setBirthDate(model.getBirthDate());
         produtor.setBusinessName(model.getBusinessName());
         produtor.setPhone(model.getPhone());
         produtor.setAddress(model.getAddress());

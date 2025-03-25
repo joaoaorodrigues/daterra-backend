@@ -22,7 +22,7 @@ public class SecurityWebConfig {
             csrfConfigurer.disable();
         });
         httpSecurity.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/", "/criar-conta", "/login", "/mapa", "/contactos").permitAll();
+            auth.requestMatchers("/", "/criar-conta/**", "/login", "/mapa", "/contactos", "/ajuda").permitAll();
             auth.requestMatchers("/consumidor/**").hasRole("CONSUMIDOR");
             auth.requestMatchers("/produtor/**").hasRole("PRODUTOR");
             auth.requestMatchers("/admin/**").hasRole("ADMIN");

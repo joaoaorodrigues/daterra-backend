@@ -18,13 +18,16 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
+
     @GetMapping("/")
     public ResponseEntity<String> getRegistrationInfo() {
         return ResponseEntity.ok("Tudo certo!");
     }
 
+
     @PostMapping("/consumidor")
     public ResponseEntity<String> registerConsumidor(@RequestBody CriarConsumidorModel model) {
+//        System.out.println("Received POST request for consumidor: " + model);
         registrationService.registerConsumidor(model);
         return ResponseEntity.ok("Consumidor registado com sucesso.");
     }
@@ -34,4 +37,5 @@ public class RegistrationController {
         registrationService.registerProdutor(model);
         return ResponseEntity.ok("Produtor registado com sucesso.");
     }
+
 }

@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id
@@ -17,14 +18,14 @@ public class User {
     protected String password;
     protected String firstName;
     protected String lastName;
-    protected String confirmPassword;
+//    protected String confirmPassword;
     protected String phone;
     protected String address;
     protected String city;
     protected String country;
     protected String postalCode;
     protected String nif;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     protected LocalDate birthDate;
 
     protected boolean isAdmin;
@@ -44,13 +45,13 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
+//    public String getConfirmPassword() {
+//        return confirmPassword;
+//    }
+//
+//    public void setConfirmPassword(String confirmPassword) {
+//        this.confirmPassword = confirmPassword;
+//    }
 
     public String getPhone() {
         return phone;
