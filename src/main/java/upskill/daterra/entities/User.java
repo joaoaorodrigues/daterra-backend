@@ -27,6 +27,15 @@ public class User {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     protected LocalDate birthDate;
 
+    protected boolean isAdmin;
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
     public LocalDate getBirthDate() {
         return birthDate;
     }

@@ -4,6 +4,6 @@ import upskill.daterra.models.CriarConsumidorModel;
 import upskill.daterra.models.CriarProdutorModel;
 
 public interface RegistrationService {
-    void registerBuyer(CriarConsumidorModel model);
-    void registerSeller(CriarProdutorModel model);
+    void registerConsumidor(CriarConsumidorModel model);
+    void registerProdutor(CriarProdutorModel model);
 }

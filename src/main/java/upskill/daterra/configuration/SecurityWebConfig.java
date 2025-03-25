@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -13,15 +11,9 @@ public class SecurityWebConfig {
 
     private final UserAuthenticationProvider userAuthenticationProvider;
 
-    // Constructor injection for UserAuthenticationProvider
     @Autowired
     public SecurityWebConfig(UserAuthenticationProvider userAuthenticationProvider) {
         this.userAuthenticationProvider = userAuthenticationProvider;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12); // PasswordEncoder bean definition
     }
 
     @Bean
@@ -30,11 +22,10 @@ public class SecurityWebConfig {
             csrfConfigurer.disable();
         });
         httpSecurity.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/login", "/signup").permitAll();
-            auth.requestMatchers("/user", "/user/**").authenticated();
-            auth.requestMatchers("/novaTarefa").authenticated();
-            auth.requestMatchers("/countries").hasRole("ADMIN");
-            auth.requestMatchers("/public/**").permitAll();
+            auth.requestMatchers("/", "/criar-conta", "/login", "/mapa", "/contactos").permitAll();
+            auth.requestMatchers("/consumidor/**").hasRole("CONSUMIDOR");
+            auth.requestMatchers("/produtor/**").hasRole("PRODUTOR");
+            auth.requestMatchers("/admin/**").hasRole("ADMIN");
         });
         httpSecurity.formLogin(loginConfig -> {
             loginConfig.failureHandler((request, response, exception) -> {
@@ -46,7 +37,7 @@ public class SecurityWebConfig {
             loginConfig.usernameParameter("email");
             loginConfig.loginProcessingUrl("/login");
         });
-        httpSecurity.authenticationProvider(userAuthenticationProvider); // Injecting UserAuthenticationProvider
+        httpSecurity.authenticationProvider(userAuthenticationProvider);
         return httpSecurity.build();
     }
 }

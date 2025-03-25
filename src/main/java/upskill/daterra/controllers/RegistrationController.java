@@ -2,16 +2,13 @@ package upskill.daterra.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import upskill.daterra.models.CriarConsumidorModel;
 import upskill.daterra.models.CriarProdutorModel;
 import upskill.daterra.services.auth.RegistrationService;
 
 @RestController
-@RequestMapping("/public")
+@RequestMapping("/criar-conta")
 public class RegistrationController {
 
     private final RegistrationService registrationService;
@@ -21,15 +18,20 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
-    @PostMapping("/contas/registo")
-    public ResponseEntity<String> registerBuyer(@RequestBody CriarConsumidorModel model) {
-        registrationService.registerBuyer(model);
-        return ResponseEntity.ok("Buyer registered successfully");
+    @GetMapping("/")
+    public ResponseEntity<String> getRegistrationInfo() {
+        return ResponseEntity.ok("Tudo certo!");
     }
 
-    @PostMapping("/contas/registoprodutor")
-    public ResponseEntity<String> registerSeller(@RequestBody CriarProdutorModel model) {
-        registrationService.registerSeller(model);
-        return ResponseEntity.ok("Seller registered successfully");
+    @PostMapping("/consumidor")
+    public ResponseEntity<String> registerConsumidor(@RequestBody CriarConsumidorModel model) {
+        registrationService.registerConsumidor(model);
+        return ResponseEntity.ok("Consumidor registado com sucesso.");
+    }
+
+    @PostMapping("/produtor")
+    public ResponseEntity<String> registerProdutor(@RequestBody CriarProdutorModel model) {
+        registrationService.registerProdutor(model);
+        return ResponseEntity.ok("Produtor registado com sucesso.");
     }
 }

@@ -30,22 +30,22 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     @Transactional
-    public void registerBuyer(CriarConsumidorModel model) {
+    public void registerConsumidor(CriarConsumidorModel model) {
         validatePasswords(model.getPassword(), model.getConfirmPassword());
 
         Consumidor consumidor = new Consumidor();
-        mapBuyerFields(model, consumidor);
+        mapDadosConsumidor(model, consumidor);
         consumidor.setPassword(passwordEncoder.encode(model.getPassword()));
         userRepository.save(consumidor);
     }
 
     @Override
     @Transactional
-    public void registerSeller(CriarProdutorModel model) {
+    public void registerProdutor(CriarProdutorModel model) {
         validatePasswords(model.getPassword(), model.getConfirmPassword());
 
         Produtor produtor = new Produtor();
-        mapSellerFields(model, produtor);
+        mapDadosProdutor(model, produtor);
         produtor.setPassword(passwordEncoder.encode(model.getPassword()));
         userRepository.save(produtor);
     }
@@ -56,7 +56,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
     }
 
-    private void mapBuyerFields(CriarConsumidorModel model, Consumidor consumidor) {
+    private void mapDadosConsumidor(CriarConsumidorModel model, Consumidor consumidor) {
         consumidor.setEmail(model.getEmail());
         consumidor.setFirstName(model.getFirstName());
         consumidor.setLastName(model.getLastName());
@@ -68,7 +68,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         consumidor.setNif(model.getNif());
     }
 
-    private void mapSellerFields(CriarProdutorModel model, Produtor produtor) {
+    private void mapDadosProdutor(CriarProdutorModel model, Produtor produtor) {
         produtor.setEmail(model.getEmail());
         produtor.setFirstName(model.getFirstName());
         produtor.setLastName(model.getLastName());

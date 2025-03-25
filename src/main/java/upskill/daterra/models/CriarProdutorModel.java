@@ -1,8 +1,6 @@
 package upskill.daterra.models;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import upskill.daterra.entities.Produtor;
-
 import java.time.LocalDate;
 
 public class CriarProdutorModel {
@@ -18,7 +16,7 @@ public class CriarProdutorModel {
     private String country;
     private String postalCode;
     private String nif;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
     private String iban;
 
