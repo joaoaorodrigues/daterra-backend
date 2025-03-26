@@ -24,7 +24,6 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    // Constructor injection for PasswordEncoder and UserRepository
     @Autowired
     public UserAuthenticationProvider(PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
