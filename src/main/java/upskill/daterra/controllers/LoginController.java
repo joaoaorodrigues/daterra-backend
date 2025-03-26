@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import upskill.daterra.models.LoginModel;
-import upskill.daterra.services.user.LoginService;
+import upskill.daterra.services.auth.LoginService;
 
 @RestController
 @RequestMapping("/auth")

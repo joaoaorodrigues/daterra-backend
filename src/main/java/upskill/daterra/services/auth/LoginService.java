@@ -1,4 +1,4 @@
-package upskill.daterra.services.user;
+package upskill.daterra.services.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -18,7 +18,6 @@ public class User {
     protected String password;
     protected String firstName;
     protected String lastName;
-//    protected String confirmPassword;
     protected String phone;
     protected String address;
     protected String city;
@@ -44,14 +43,6 @@ public class User {
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
-
-//    public String getConfirmPassword() {
-//        return confirmPassword;
-//    }
-//
-//    public void setConfirmPassword(String confirmPassword) {
-//        this.confirmPassword = confirmPassword;
-//    }
 
     public String getPhone() {
         return phone;

@@ -15,14 +15,12 @@ public class ConsumidorController {
     @Autowired
     private ConsumidorRepository consumidorRepository;
 
-    // Obter consumidor por email
     @GetMapping("/{email}")
     public ResponseEntity<Consumidor> getConsumidorByEmail(@PathVariable String email) {
         Optional<Consumidor> consumidor = consumidorRepository.findByEmail(email);
         return consumidor.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Deletar consumidor por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteConsumidor(@PathVariable Long id) {
         if (!consumidorRepository.existsById(id)) {
