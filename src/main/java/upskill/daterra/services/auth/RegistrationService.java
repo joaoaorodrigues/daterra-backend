@@ -6,4 +6,5 @@ import upskill.daterra.models.CriarProdutorModel;
 public interface RegistrationService {
     void registerConsumidor(CriarConsumidorModel model);
     void registerProdutor(CriarProdutorModel model);
+
 }

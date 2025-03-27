@@ -10,6 +10,7 @@ import upskill.daterra.entities.Produtor;
 import upskill.daterra.models.CriarConsumidorModel;
 import upskill.daterra.models.CriarProdutorModel;
 import upskill.daterra.repositories.UserRepository;
+import upskill.daterra.services.map.GeocodingService;
 import upskill.daterra.services.user.UserService;
 
 @Service
@@ -18,14 +19,17 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
+    private final GeocodingService geocodingService;
 
     @Autowired
     public RegistrationServiceImpl(UserRepository userRepository,
                                    PasswordEncoder passwordEncoder,
-                                   UserService userService) {
+                                   UserService userService,
+                                   GeocodingService geocodingService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
+        this.geocodingService = geocodingService;
     }
 
     @Override
@@ -43,9 +47,26 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Transactional
     public void registerProdutor(CriarProdutorModel model) {
         validatePasswords(model.getPassword(), model.getConfirmPassword());
-
         Produtor produtor = new Produtor();
         mapDadosProdutor(model, produtor);
+        try {
+            GeocodingService.Coordinates coordinates = geocodingService.getCoordinates(
+                    produtor.getAddress(),
+                    produtor.getCity(),
+                    produtor.getCountry(),
+                    produtor.getPostalCode()
+            );
+
+            if (coordinates != null) {
+                produtor.setLatitude(coordinates.latitude);
+                produtor.setLongitude(coordinates.longitude);
+            }
+        }catch (Exception e) {
+            System.err.println("Error getting coordinates: " + e.getMessage());
+
+        }
+
+        System.out.println("Produtor object: " + produtor);
         produtor.setPassword(passwordEncoder.encode(model.getPassword()));
         userRepository.save(produtor);
     }
@@ -57,17 +78,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     private void mapDadosConsumidor(CriarConsumidorModel model, Consumidor consumidor) {
-        System.out.println("Mapping Consumidor data:"); // Or use a proper logging framework
-        System.out.println("Email: " + model.getEmail());
-        System.out.println("FirstName: " + model.getFirstName());
-        System.out.println("LastName: " + model.getLastName());
-        System.out.println("Phone: " + model.getPhone());
-        System.out.println("Address: " + model.getAddress());
-        System.out.println("City: " + model.getCity());
-        System.out.println("Country: " + model.getCountry());
-        System.out.println("PostalCode: " + model.getPostalCode());
-        System.out.println("Nif: " + model.getNif());
-        System.out.println("BirthDate: " + model.getBirthDate()); // Add this line
 
         consumidor.setEmail(model.getEmail());
         consumidor.setFirstName(model.getFirstName());

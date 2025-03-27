@@ -9,44 +9,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class GeocodingService {
 
-    private final RestTemplate restTemplate = new RestTemplate();
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final RestTemplate restTemplate = new RestTemplate(); // para fazer o pedido http
+    private final ObjectMapper objectMapper = new ObjectMapper(); // para fazer o parse do objeto json
 
-    public Coordinates getCoordinatesStructured(
-            String street,
-            String city,
-            String county,
-            String state,
-            String country,
-            String postalcode) throws Exception {
+    public Coordinates getCoordinates(String address, String city, String country, String postalcode) throws Exception {
+        String freeFormAddress = address + ", " + city + ", " + postalcode + ", " + country;
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://nominatim.openstreetmap.org/search");
-
-        if (street != null && !street.isEmpty()) {
-            builder.queryParam("street", street);
-        }
-        if (city != null && !city.isEmpty()) {
-            builder.queryParam("city", city);
-        }
-        if (county != null && !county.isEmpty()) {
-            builder.queryParam("county", county);
-        }
-        if (state != null && !state.isEmpty()) {
-            builder.queryParam("state", state);
-        }
-        if (country != null && !country.isEmpty()) {
-            builder.queryParam("country", country);
-        }
-        if (postalcode != null && !postalcode.isEmpty()) {
-            builder.queryParam("postalcode", postalcode);
-        }
-
-        builder.queryParam("format", "json");
-
-        String url = builder.toUriString();
+        String url = UriComponentsBuilder.fromHttpUrl("https://nominatim.openstreetmap.org/search")
+                .queryParam("q", freeFormAddress)
+                .queryParam("format", "json")
+                .build()
+                .toUriString();
 
         String response = restTemplate.getForObject(url, String.class);
         JsonNode root = objectMapper.readTree(response);
+
+        System.out.println("Geocoding request: " + freeFormAddress);
+        System.out.println("Nominatim API URL: " + url);
+        System.out.println("Nominatim API response: " + response);
 
         if (root.isArray() && root.size() > 0) {
             JsonNode firstResult = root.get(0);
@@ -54,7 +34,7 @@ public class GeocodingService {
             double longitude = firstResult.get("lon").asDouble();
             return new Coordinates(latitude, longitude);
         } else {
-            return null; // Address not found
+            return null;
         }
     }
 

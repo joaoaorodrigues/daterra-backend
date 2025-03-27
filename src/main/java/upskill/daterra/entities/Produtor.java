@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class Produtor extends User {
-    private String shippingAddress;
     private String businessName;
     private String iban;
     private Double latitude;
@@ -41,14 +40,27 @@ public class Produtor extends User {
         this.businessName = businessName;
     }
 
-    public String getShippingAddress() {
-        return shippingAddress;
+
+    @Override
+    public String toString() {
+        return "Produtor{" +
+                "isAdmin=" + isAdmin +
+                ", birthDate=" + birthDate +
+                ", nif='" + nif + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", id=" + id +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", iban='" + iban + '\'' +
+                ", businessName='" + businessName + '\'' +
+                '}';
     }
-
-    public void setShippingAddress(String shippingAddress) {
-        this.shippingAddress = shippingAddress;
-    }
-
-
-
 }
