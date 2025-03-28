@@ -3,7 +3,7 @@ package upskill.daterra.entities;
 import jakarta.persistence.*;
 
 @Entity
-public class Categoria {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

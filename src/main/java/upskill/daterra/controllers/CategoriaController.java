@@ -2,7 +2,7 @@ package upskill.daterra.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import upskill.daterra.entities.Categoria;
+import upskill.daterra.entities.Category;
 import upskill.daterra.repositories.CategoriaRepository;
 
 import java.util.List;
@@ -19,16 +19,16 @@ public class CategoriaController {
     }
 
     @GetMapping
-    public List<Categoria> getAllCategories() {
+    public List<Category> getAllCategories() {
         return categoriaRepository.findAll();
     }
 
     @PostMapping("/criar")
-    public ResponseEntity<?> addCategory(@RequestBody Categoria categoria) {
-        if (categoriaRepository.existsByName(categoria.getName())) {
+    public ResponseEntity<?> addCategory(@RequestBody Category category) {
+        if (categoriaRepository.existsByName(category.getName())) {
             return ResponseEntity.badRequest().body("Categoria já existe.");
         }
-        return ResponseEntity.ok(categoriaRepository.save(categoria));
+        return ResponseEntity.ok(categoriaRepository.save(category));
     }
 
     @PostMapping("/delete/{id}")
