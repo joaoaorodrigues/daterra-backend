@@ -1,5 +1,6 @@
 package upskill.daterra.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +29,7 @@ public class User {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     protected LocalDate birthDate;
 
-    protected boolean isAdmin;
 
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
-    }
 
     public LocalDate getBirthDate() {
         return birthDate;

@@ -1,13 +1,30 @@
 package upskill.daterra.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+
+import java.util.List;
 
 @Entity
+
 public class Produtor extends User {
     private String businessName;
     private String iban;
+
+    @ManyToMany
+    @JoinTable(
+            name = "produtor_category",
+            joinColumns = @JoinColumn(name = "produtor_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories;
     private Double latitude;
     private Double longitude;
+
+    private boolean isApproved;
 
     public Double getLatitude() {
         return latitude;
@@ -40,11 +57,27 @@ public class Produtor extends User {
         this.businessName = businessName;
     }
 
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public boolean isApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(boolean approved) {
+        isApproved = approved;
+    }
+
+
 
     @Override
     public String toString() {
         return "Produtor{" +
-                "isAdmin=" + isAdmin +
                 ", birthDate=" + birthDate +
                 ", nif='" + nif + '\'' +
                 ", postalCode='" + postalCode + '\'' +
@@ -61,6 +94,8 @@ public class Produtor extends User {
                 ", latitude=" + latitude +
                 ", iban='" + iban + '\'' +
                 ", businessName='" + businessName + '\'' +
+                ", categories='" + categories + '\'' +
+                ", approved?='" + isApproved + '\'' +
                 '}';
     }
 }

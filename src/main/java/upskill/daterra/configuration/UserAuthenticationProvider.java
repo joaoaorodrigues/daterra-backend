@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import upskill.daterra.entities.Admin;
 import upskill.daterra.entities.Consumidor;
 import upskill.daterra.entities.Produtor;
 import upskill.daterra.entities.User;
@@ -40,12 +41,12 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         if (passwordEncoder.matches(password, user.getPassword())) {
             List<GrantedAuthority> roleList = new ArrayList<>();
 
-            if (user.isAdmin()) {
-                roleList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            } else if (user instanceof Consumidor) {
-                roleList.add(new SimpleGrantedAuthority("ROLE_CONSUMIDOR"));
-            } else if (user instanceof Produtor) {
-                roleList.add(new SimpleGrantedAuthority("ROLE_PRODUTOR"));
+            switch (user) {
+                case Admin admin -> roleList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                case Consumidor consumidor -> roleList.add(new SimpleGrantedAuthority("ROLE_CONSUMIDOR"));
+                case Produtor produtor -> roleList.add(new SimpleGrantedAuthority("ROLE_PRODUTOR"));
+                default -> {
+                }
             }
 
             return new UsernamePasswordAuthenticationToken(email, password, roleList);
