@@ -5,6 +5,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 public class SecurityWebConfig {
@@ -18,16 +24,15 @@ public class SecurityWebConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.cors(cors -> {
+            cors.configurationSource(corsConfigurationSource());
+        });
         httpSecurity.csrf(csrfConfigurer -> {
             csrfConfigurer.disable();
         });
         httpSecurity.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/**").permitAll();
 
-//            auth.requestMatchers("/", "/criar-conta/**", "/login", "/mapa", "/contactos", "/ajuda").permitAll();
-//            auth.requestMatchers("/consumidor/**").hasRole("CONSUMIDOR");
-//            auth.requestMatchers("/produtor/**").hasRole("PRODUTOR");
-//            auth.requestMatchers("/admin/**").hasRole("ADMIN");
         });
         httpSecurity.formLogin(loginConfig -> {
             loginConfig.failureHandler((request, response, exception) -> {
@@ -41,5 +46,27 @@ public class SecurityWebConfig {
         });
         httpSecurity.authenticationProvider(userAuthenticationProvider);
         return httpSecurity.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        // Allow the front-end application from localhost:5173
+        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+
+        // Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        // Allow the necessary headers (adjust according to your needs)
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-Requested-With", "Accept"));
+
+        // Allow credentials (cookies, etc.)
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 }

@@ -33,6 +33,7 @@ public class ProdutoService {
                     produto.setDescricao(produtoAtualizado.getDescricao());
                     produto.setPreco(produtoAtualizado.getPreco());
                     produto.setQuantidade(produtoAtualizado.getQuantidade());
+                    produto.setImposto(produtoAtualizado.getImposto());
                     return produtoRepository.save(produto);
                 }).orElseThrow(() -> new RuntimeException("Produto não encontrado ou não tem permissão para editar."));
     }

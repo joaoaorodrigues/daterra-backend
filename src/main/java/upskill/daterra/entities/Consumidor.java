@@ -4,14 +4,23 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class Consumidor extends User {
-    private String shippingAddress;
-
-    public String getShippingAddress() {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress(String shippingAddress) {
-        this.shippingAddress = shippingAddress;
+    @Override
+    public String toString() {
+        return "Consumidor{" +
+                "isAdmin=" + isAdmin +
+                ", birthDate=" + birthDate +
+                ", nif='" + nif + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", id=" + id +
+                '}';
     }
 }
 

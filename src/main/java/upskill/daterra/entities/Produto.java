@@ -11,7 +11,16 @@ public class Produto {
     private String nome;
     private String descricao;
     private Double preco;
+    private Double imposto;
     private Integer quantidade;
+
+    public Double getImposto() {
+        return imposto;
+    }
+
+    public void setImposto(Double imposto) {
+        this.imposto = imposto;
+    }
 
     @ManyToOne
     @JoinColumn(name = "produtor_id", nullable = false)
