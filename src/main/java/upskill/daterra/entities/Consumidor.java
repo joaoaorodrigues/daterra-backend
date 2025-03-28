@@ -7,7 +7,6 @@ public class Consumidor extends User {
     @Override
     public String toString() {
         return "Consumidor{" +
-                "isAdmin=" + isAdmin +
                 ", birthDate=" + birthDate +
                 ", nif='" + nif + '\'' +
                 ", postalCode='" + postalCode + '\'' +
