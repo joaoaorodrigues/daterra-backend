@@ -11,6 +11,7 @@ import upskill.daterra.repositories.ProdutorRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProdutorServiceImpl implements ProdutorService {
@@ -23,6 +24,18 @@ public class ProdutorServiceImpl implements ProdutorService {
         List<Produtor> approvedProdutores = produtorRepository.findByIsApproved(true);
         return mapDadosProdutores(approvedProdutores);
     }
+
+    @Override
+    public List<Produtor> listarProdutores() {
+        return produtorRepository.findAll();
+    }
+
+    @Override
+    public Optional<Produtor> getProdutor(Long produtorId) {
+        Optional<Produtor> produtor = produtorRepository.findById(produtorId);
+        return produtor;
+    }
+
     private List<ProdutorMapInfo> mapDadosProdutores(List<Produtor> produtores) {
         List<ProdutorMapInfo> produtorMapInfoList = new ArrayList<>();
         for (Produtor produtor : produtores) {

@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import upskill.daterra.entities.Produto;
 import upskill.daterra.services.produto.ProdutoService;
+import upskill.daterra.services.produto.ProdutoServiceImpl;
 
 import java.util.List;
 

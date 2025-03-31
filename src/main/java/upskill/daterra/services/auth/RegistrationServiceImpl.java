@@ -10,7 +10,7 @@ import upskill.daterra.entities.Consumidor;
 import upskill.daterra.entities.Produtor;
 import upskill.daterra.models.CriarConsumidorModel;
 import upskill.daterra.models.CriarProdutorModel;
-import upskill.daterra.repositories.CategoriaRepository;
+import upskill.daterra.repositories.CategoryRepository;
 import upskill.daterra.repositories.UserRepository;
 import upskill.daterra.services.map.GeocodingService;
 import upskill.daterra.services.user.UserService;
@@ -22,7 +22,7 @@ import java.util.List;
 public class RegistrationServiceImpl implements RegistrationService {
 
     private final UserRepository userRepository;
-    private final CategoriaRepository categoriaRepository;
+    private final CategoryRepository categoryRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final GeocodingService geocodingService;
@@ -30,12 +30,12 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Autowired
     public RegistrationServiceImpl(UserRepository userRepository,
-                                   CategoriaRepository categoriaRepository,
+                                   CategoryRepository categoryRepository,
                                    PasswordEncoder passwordEncoder,
                                    UserService userService,
                                    GeocodingService geocodingService) {
         this.userRepository = userRepository;
-        this.categoriaRepository = categoriaRepository;
+        this.categoryRepository = categoryRepository;
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
         this.geocodingService = geocodingService;
@@ -115,19 +115,13 @@ public class RegistrationServiceImpl implements RegistrationService {
 //        produtor.setIban(model.getIban());
         List<Category> categories = new ArrayList<>();
         if (model.getCategories() != null) {
-            for (String categoryName : model.getCategories()) {
-                Category category = categoriaRepository.findByName(categoryName);
-                if (category == null) {
-                    category = new Category();
-                    category.setName(categoryName);
-                    categoriaRepository.save(category);
+            for (Long categoryId : model.getCategories()) {
+                Category category = categoryRepository.findById(categoryId).orElse(null);
+                if (category != null) {
+                    categories.add(category);
                 }
-                categories.add(category);
             }
         }
         produtor.setCategories(categories);
-
-
-
     }
 }

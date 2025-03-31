@@ -19,8 +19,7 @@ public class CriarProdutorModel {
     private String country;
     private String postalCode;
 
-    private List<String> categories;
-
+    private List<Long> categories;
     private String nif;
 //    @DateTimeFormat(pattern = "dd-MM-yyyy")
 //    private LocalDate birthDate;
@@ -138,10 +137,10 @@ public class CriarProdutorModel {
         this.businessName = businessName;
     }
 
-    public List<String> getCategories() {
+    public List<Long> getCategories() {
         return categories;
     }
-    public void setCategories(List<String> categories) {
+    public void setCategories(List<Long> categories) {
         this.categories = categories;
     }
 }
