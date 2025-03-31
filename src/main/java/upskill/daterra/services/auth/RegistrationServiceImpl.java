@@ -5,28 +5,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import upskill.daterra.entities.Category;
 import upskill.daterra.entities.Consumidor;
 import upskill.daterra.entities.Produtor;
 import upskill.daterra.models.CriarConsumidorModel;
 import upskill.daterra.models.CriarProdutorModel;
+import upskill.daterra.repositories.CategoriaRepository;
 import upskill.daterra.repositories.UserRepository;
 import upskill.daterra.services.map.GeocodingService;
 import upskill.daterra.services.user.UserService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
 
     private final UserRepository userRepository;
+    private final CategoriaRepository categoriaRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final GeocodingService geocodingService;
 
+
     @Autowired
     public RegistrationServiceImpl(UserRepository userRepository,
+                                   CategoriaRepository categoriaRepository,
                                    PasswordEncoder passwordEncoder,
                                    UserService userService,
                                    GeocodingService geocodingService) {
         this.userRepository = userRepository;
+        this.categoriaRepository = categoriaRepository;
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
         this.geocodingService = geocodingService;
@@ -95,7 +104,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         produtor.setEmail(model.getEmail());
         produtor.setFirstName(model.getFirstName());
         produtor.setLastName(model.getLastName());
-        produtor.setBirthDate(model.getBirthDate());
+//        produtor.setBirthDate(model.getBirthDate());
         produtor.setBusinessName(model.getBusinessName());
         produtor.setPhone(model.getPhone());
         produtor.setAddress(model.getAddress());
@@ -103,6 +112,22 @@ public class RegistrationServiceImpl implements RegistrationService {
         produtor.setCountry(model.getCountry());
         produtor.setPostalCode(model.getPostalCode());
         produtor.setNif(model.getNif());
-        produtor.setIban(model.getIban());
+//        produtor.setIban(model.getIban());
+        List<Category> categories = new ArrayList<>();
+        if (model.getCategories() != null) {
+            for (String categoryName : model.getCategories()) {
+                Category category = categoriaRepository.findByName(categoryName);
+                if (category == null) {
+                    category = new Category();
+                    category.setName(categoryName);
+                    categoriaRepository.save(category);
+                }
+                categories.add(category);
+            }
+        }
+        produtor.setCategories(categories);
+
+
+
     }
 }

@@ -6,18 +6,30 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
+
+
 @Service
 public class GeocodingService {
 
     private final RestTemplate restTemplate = new RestTemplate(); // para fazer o pedido http
     private final ObjectMapper objectMapper = new ObjectMapper(); // para fazer o parse do objeto json
 
+    public String removeAccents(String input) {
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+        return normalized.replaceAll("\\p{M}", ""); // Remove all diacritical marks
+    }
     public Coordinates getCoordinates(String address, String city, String country, String postalcode) throws Exception {
-        String freeFormAddress = address + ", " + city + ", " + postalcode + ", " + country;
+
+        String sanitizedAddress = removeAccents(address);
+        String freeFormAddress = sanitizedAddress + " " + postalcode + " " + country;
 
         String url = UriComponentsBuilder.fromHttpUrl("https://nominatim.openstreetmap.org/search")
                 .queryParam("q", freeFormAddress)
                 .queryParam("format", "json")
+                .queryParam("addressdetails", 1)
                 .build()
                 .toUriString();
 

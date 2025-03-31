@@ -1,7 +1,10 @@
 package upskill.daterra.models;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import upskill.daterra.entities.Category;
+
 import java.time.LocalDate;
+import java.util.List;
 
 public class CriarProdutorModel {
     private String email;
@@ -15,27 +18,13 @@ public class CriarProdutorModel {
     private String city;
     private String country;
     private String postalCode;
+
+    private List<String> categories;
+
     private String nif;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate birthDate;
-    private String iban;
-    private Double latitude;
-    private Double longitude;
-
-    public Double getLatitude() {
-        return latitude;
-    }
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
+//    @DateTimeFormat(pattern = "dd-MM-yyyy")
+//    private LocalDate birthDate;
+//    private String iban;
 
     public String getEmail() {
         return email;
@@ -125,21 +114,21 @@ public class CriarProdutorModel {
         this.nif = nif;
     }
 
-    public String getIban() {
-        return iban;
-    }
-
-    public void setIban(String iban) {
-        this.iban = iban;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
+//    public String getIban() {
+//        return iban;
+//    }
+//
+//    public void setIban(String iban) {
+//        this.iban = iban;
+//    }
+//
+//    public LocalDate getBirthDate() {
+//        return birthDate;
+//    }
+//
+//    public void setBirthDate(LocalDate birthDate) {
+//        this.birthDate = birthDate;
+//    }
 
     public String getBusinessName() {
         return businessName;
@@ -149,4 +138,10 @@ public class CriarProdutorModel {
         this.businessName = businessName;
     }
 
+    public List<String> getCategories() {
+        return categories;
+    }
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
+    }
 }
