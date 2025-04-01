@@ -38,6 +38,9 @@ public class ProdutorServiceImpl implements ProdutorService {
 
     private List<ProdutorMapInfo> mapDadosProdutores(List<Produtor> produtores) {
         List<ProdutorMapInfo> produtorMapInfoList = new ArrayList<>();
+        if (produtores == null) {
+            return produtorMapInfoList;
+        }
         for (Produtor produtor : produtores) {
             ProdutorMapInfo model = new ProdutorMapInfo();
 
@@ -45,8 +48,8 @@ public class ProdutorServiceImpl implements ProdutorService {
             model.setBusinessName(produtor.getBusinessName());
             model.setAddress(produtor.getAddress());
             model.setCategories(produtor.getCategories());
-            model.setLatitude(produtor.getLatitude());
-            model.setLongitude(produtor.getLongitude());
+            model.setLatitude(produtor.getLatitude() != null ? produtor.getLatitude() : 0.0); // Default to 0.0
+            model.setLongitude(produtor.getLongitude() != null ? produtor.getLongitude() : 0.0);
 
             produtorMapInfoList.add(model);
         }
