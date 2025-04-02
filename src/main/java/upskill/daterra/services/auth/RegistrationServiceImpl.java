@@ -12,8 +12,7 @@ import upskill.daterra.models.CriarConsumidorModel;
 import upskill.daterra.models.CriarProdutorModel;
 import upskill.daterra.repositories.CategoryRepository;
 import upskill.daterra.repositories.UserRepository;
-import upskill.daterra.services.map.GeocodingService;
-import upskill.daterra.services.user.UserService;
+import upskill.daterra.services.guest.GeocodingService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserService userService;
     private final GeocodingService geocodingService;
 
 
@@ -32,12 +30,10 @@ public class RegistrationServiceImpl implements RegistrationService {
     public RegistrationServiceImpl(UserRepository userRepository,
                                    CategoryRepository categoryRepository,
                                    PasswordEncoder passwordEncoder,
-                                   UserService userService,
                                    GeocodingService geocodingService) {
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.passwordEncoder = passwordEncoder;
-        this.userService = userService;
         this.geocodingService = geocodingService;
     }
 

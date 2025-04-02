@@ -1,19 +1,17 @@
-package upskill.daterra.services.produtor;
+package upskill.daterra.services.guest;
 
 import upskill.daterra.entities.Produtor;
 import upskill.daterra.models.ProdutorMapInfo;
-import upskill.daterra.repositories.ProdutorProjection;
-import java.util.Optional;
-
 
 import java.util.List;
+import java.util.Optional;
 
-public interface ProdutorService {
-//    List<ProdutorMapInfoDTO> getProdutoresMapInfo();
+public interface ProdutoresService {
 
     List<ProdutorMapInfo> getProdutoresMapInfo();
-
     List<Produtor> listarProdutores();
 
     Optional<Produtor> getProdutor(Long produtorId);
+
+
 }

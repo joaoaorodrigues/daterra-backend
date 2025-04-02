@@ -1,4 +1,4 @@
-package upskill.daterra.controllers;
+package upskill.daterra.controllers.guest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,8 +10,9 @@ import org.springframework.web.server.ResponseStatusException;
 import upskill.daterra.entities.Category;
 import upskill.daterra.entities.Produto;
 import upskill.daterra.entities.Produtor;
+import upskill.daterra.models.ProdutorMapInfo;
+import upskill.daterra.services.guest.ProdutoresService;
 import upskill.daterra.services.produto.ProdutoService;
-import upskill.daterra.services.produtor.ProdutorService;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,16 +24,21 @@ public class PublicController {
     private ProdutoService produtoService;
 
     @Autowired
-    private ProdutorService produtorService;
+    private ProdutoresService produtoresService;
 
     @GetMapping("/produtores")
     public ResponseEntity<List<Produtor>> listarProdutores() {
-        return ResponseEntity.ok(produtorService.listarProdutores());
+        return ResponseEntity.ok(produtoresService.listarProdutores());
+    }
+
+    @GetMapping("/produtores/map-info")
+    public List<ProdutorMapInfo> getProdutoresMapInfo() {
+        return produtoresService.getProdutoresMapInfo();
     }
 
     @GetMapping("/produtores/{produtorId}")
     public ResponseEntity<Produtor> getProdutor(@PathVariable Long produtorId) {
-        Optional<Produtor> produtor = produtorService.getProdutor(produtorId);
+        Optional<Produtor> produtor = produtoresService.getProdutor(produtorId);
         if (produtor.isPresent()) {
             return ResponseEntity.ok(produtor.get());
         } else {

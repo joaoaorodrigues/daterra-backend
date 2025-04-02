@@ -1,12 +1,9 @@
-package upskill.daterra.services.produtor;
+package upskill.daterra.services.guest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import upskill.daterra.entities.Consumidor;
 import upskill.daterra.entities.Produtor;
-import upskill.daterra.models.CriarConsumidorModel;
 import upskill.daterra.models.ProdutorMapInfo;
-import upskill.daterra.repositories.ProdutorProjection;
 import upskill.daterra.repositories.ProdutorRepository;
 
 import java.util.ArrayList;
@@ -14,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProdutorServiceImpl implements ProdutorService {
+public class ProdutoresServiceImpl implements ProdutoresService{
 
     @Autowired
     private ProdutorRepository produtorRepository;
@@ -29,7 +26,6 @@ public class ProdutorServiceImpl implements ProdutorService {
     public List<Produtor> listarProdutores() {
         return produtorRepository.findAll();
     }
-
     @Override
     public Optional<Produtor> getProdutor(Long produtorId) {
         Optional<Produtor> produtor = produtorRepository.findById(produtorId);
@@ -53,9 +49,8 @@ public class ProdutorServiceImpl implements ProdutorService {
 
             produtorMapInfoList.add(model);
         }
+        System.out.println(produtorMapInfoList);
         return produtorMapInfoList;
     }
 
 }
-
-

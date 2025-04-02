@@ -1,4 +1,4 @@
-package upskill.daterra.controllers;
+package upskill.daterra.controllers.admin;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
