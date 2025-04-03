@@ -1,51 +1,46 @@
 package upskill.daterra.services.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import upskill.daterra.entities.Admin;
 import upskill.daterra.entities.Consumidor;
 import upskill.daterra.entities.Produtor;
+import upskill.daterra.entities.User;
 import upskill.daterra.models.LoginModel;
+import upskill.daterra.repositories.AdminRepository;
 import upskill.daterra.repositories.ConsumidorRepository;
 import upskill.daterra.repositories.ProdutorRepository;
+import upskill.daterra.repositories.UserRepository;
 
 import java.util.Optional;
 
 @Service
 public class LoginService {
-
-    private final ConsumidorRepository consumidorRepository;
-    private final ProdutorRepository produtorRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public LoginService(ConsumidorRepository consumidorRepository, ProdutorRepository produtorRepository, PasswordEncoder passwordEncoder) {
-        this.consumidorRepository = consumidorRepository;
-        this.produtorRepository = produtorRepository;
+    public LoginService(UserRepository userRepository,
+                        PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     public String authenticateUser(LoginModel loginModel) {
-        String email = loginModel.getEmail();
-        String password = loginModel.getPassword();
+        User user = userRepository.findByEmail(loginModel.getEmail())
+                .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
 
-        Optional<Consumidor> consumidorOpt = consumidorRepository.findByEmail(email);
-        if (consumidorOpt.isPresent()) {
-            Consumidor consumidor = consumidorOpt.get();
-            if (passwordEncoder.matches(password, consumidor.getPassword())) {
-                return "CONSUMIDOR";
-            }
+        if (!passwordEncoder.matches(loginModel.getPassword(), user.getPassword())) {
+            throw new BadCredentialsException("Invalid credentials");
         }
 
+        if (user instanceof Admin) return "ADMIN";
+        if (user instanceof Produtor) return "PRODUTOR";
+        if (user instanceof Consumidor) return "CONSUMIDOR";
 
-        Optional<Produtor> produtorOpt = produtorRepository.findByEmail(email);
-        if (produtorOpt.isPresent()) {
-            Produtor produtor = produtorOpt.get();
-            if (passwordEncoder.matches(password, produtor.getPassword())) {
-                return "PRODUTOR";
-            }
-        }
-
-        return "INVALIDO";
+        throw new BadCredentialsException("Invalid user type");
     }
 }
+

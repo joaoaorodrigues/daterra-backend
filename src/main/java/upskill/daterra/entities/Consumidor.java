@@ -1,8 +1,10 @@
 package upskill.daterra.entities;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
+@DiscriminatorValue("CONSUMIDOR")
 public class Consumidor extends User {
     @Override
     public String toString() {

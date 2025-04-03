@@ -3,7 +3,9 @@ package upskill.daterra.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -23,29 +25,25 @@ public class SecurityWebConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors(cors -> {
-            cors.configurationSource(corsConfigurationSource());
-        });
-        httpSecurity.csrf(csrfConfigurer -> {
-            csrfConfigurer.disable();
-        });
-        httpSecurity.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/**").permitAll();
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/produtor/**").hasAuthority("ROLE_PRODUTOR")
+                        .requestMatchers("/cliente/**").hasAuthority("ROLE_CONSUMIDOR")
+                        .requestMatchers("/**").permitAll()
+                        .anyRequest().authenticated()
+                )
 
-        });
-        httpSecurity.formLogin(loginConfig -> {
-            loginConfig.failureHandler((request, response, exception) -> {
-                response.setStatus(401);
-            });
-            loginConfig.successHandler((request, response, exception) -> {
-                response.setStatus(200);
-            });
-            loginConfig.usernameParameter("email");
-            loginConfig.loginProcessingUrl("/login");
-        });
-        httpSecurity.authenticationProvider(userAuthenticationProvider);
-        return httpSecurity.build();
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
+                        })
+                );
+
+        return http.build();
     }
 
     @Bean

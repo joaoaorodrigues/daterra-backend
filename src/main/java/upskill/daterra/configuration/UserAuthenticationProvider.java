@@ -34,22 +34,35 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String email = authentication.getPrincipal().toString();
+        System.out.println("AUTH ATTEMPT FOR: " + email);
         String password = authentication.getCredentials().toString();
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new BadCredentialsException("Invalid username or password"));
+                .orElseThrow(() -> {
+                    System.out.println("AUTH ATTEMPT FOR: " + email);
+                    return new BadCredentialsException("Invalid username or password");
+                });
+
+        System.out.println("Found user type: " + user.getClass().getSimpleName());
 
         if (passwordEncoder.matches(password, user.getPassword())) {
             List<GrantedAuthority> roleList = new ArrayList<>();
 
             switch (user) {
-                case Admin admin -> roleList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                case Admin admin -> {
+                    System.out.println("Granting ROLE_ADMIN to " + email);
+                    roleList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                }
                 case Consumidor consumidor -> roleList.add(new SimpleGrantedAuthority("ROLE_CONSUMIDOR"));
                 case Produtor produtor -> roleList.add(new SimpleGrantedAuthority("ROLE_PRODUTOR"));
                 default -> {
                 }
             }
 
-            return new UsernamePasswordAuthenticationToken(email, password, roleList);
+            return new UsernamePasswordAuthenticationToken(
+                    user,
+                    null,
+                    roleList
+            );
         }
 
         throw new BadCredentialsException("Invalid username or password");

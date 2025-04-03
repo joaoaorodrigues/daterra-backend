@@ -1,14 +1,12 @@
 package upskill.daterra.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
+@DiscriminatorValue("PRODUTOR")
 
 public class Produtor extends User {
     private String businessName;

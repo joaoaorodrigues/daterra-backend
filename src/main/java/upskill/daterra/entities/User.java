@@ -3,14 +3,20 @@ package upskill.daterra.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Collection;
+
 
 @Entity
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
 
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
@@ -122,8 +128,34 @@ public class User {
     public String getFirstName() {
         return firstName;
     }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this instanceof Admin) {
+            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else if (this instanceof Produtor) {
+            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_PRODUTOR"));
+        } else if (this instanceof Consumidor) {
+            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_CONSUMIDOR"));
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public String getUsername() { return email; }
+
+    @Override
+    public boolean isAccountNonExpired() { return true; }
+
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() { return true; }
 }
