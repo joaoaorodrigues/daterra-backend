@@ -1,5 +1,6 @@
 package upskill.daterra.services.produto;
 
+import org.springframework.web.multipart.MultipartFile;
 import upskill.daterra.entities.Category;
 import upskill.daterra.entities.Produto;
 
@@ -11,7 +12,7 @@ public interface ProdutoService {
 
     List<Produto> listarProdutosPorProdutor(Long produtorId);
 
-    Produto atualizarProduto(Long id, Long produtorId, Produto produto);
+    Produto atualizarProduto(Long id, Long produtorId, Produto produto, MultipartFile arquivo);
 
     void apagarProduto(Long id, Long produtorId);
 
