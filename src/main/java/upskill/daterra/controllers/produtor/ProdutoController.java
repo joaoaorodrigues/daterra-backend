@@ -3,6 +3,7 @@ package upskill.daterra.controllers.produtor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import upskill.daterra.entities.Produto;
 import upskill.daterra.services.produto.ProdutoService;
 
@@ -26,8 +27,8 @@ public class ProdutoController {
     }
 
     @PutMapping("/atualizar/{produtorId}/{id}")
-    public ResponseEntity<Produto> atualizarProduto(@PathVariable Long produtorId, @PathVariable Long id, @RequestBody Produto produto) {
-        return ResponseEntity.ok(produtoService.atualizarProduto(id, produtorId, produto));
+    public ResponseEntity<Produto> atualizarProduto(@PathVariable Long produtorId, @PathVariable Long id, @RequestBody Produto produto,  @RequestPart(value = "imagem", required = false) MultipartFile arquivo) {
+        return ResponseEntity.ok(produtoService.atualizarProduto(id, produtorId, produto, arquivo));
     }
 
     @DeleteMapping("/deletar/{produtorId}/{id}")

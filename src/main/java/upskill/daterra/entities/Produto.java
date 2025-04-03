@@ -13,6 +13,17 @@ public class Produto {
     private Double preco;
     private Double imposto;
     private Integer quantidade;
+    @OneToOne
+    @JoinColumn(name = "imagem_id")
+    private Images imagem;
+
+    public Images getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(Images imagem) {
+        this.imagem = imagem;
+    }
 
     public Double getImposto() {
         return imposto;
