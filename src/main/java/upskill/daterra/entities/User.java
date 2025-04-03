@@ -7,16 +7,19 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Collection;
+import java.util.List;
 
 
 @Entity
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
 
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
@@ -134,15 +137,10 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this instanceof Admin) {
-            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        } else if (this instanceof Produtor) {
-            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_PRODUTOR"));
-        } else if (this instanceof Consumidor) {
-            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_CONSUMIDOR"));
-        }
+
         return Collections.emptyList();
     }
+
 
     @Override
     public String getUsername() { return email; }

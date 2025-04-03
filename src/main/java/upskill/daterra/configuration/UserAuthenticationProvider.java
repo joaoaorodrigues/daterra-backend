@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import upskill.daterra.entities.Admin;
@@ -17,6 +18,7 @@ import upskill.daterra.entities.User;
 import upskill.daterra.repositories.UserRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -33,39 +35,32 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String email = authentication.getPrincipal().toString();
-        System.out.println("AUTH ATTEMPT FOR: " + email);
+        String email = authentication.getName();
         String password = authentication.getCredentials().toString();
+
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> {
-                    System.out.println("AUTH ATTEMPT FOR: " + email);
-                    return new BadCredentialsException("Invalid username or password");
-                });
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        System.out.println("Found user type: " + user.getClass().getSimpleName());
-
-        if (passwordEncoder.matches(password, user.getPassword())) {
-            List<GrantedAuthority> roleList = new ArrayList<>();
-
-            switch (user) {
-                case Admin admin -> {
-                    System.out.println("Granting ROLE_ADMIN to " + email);
-                    roleList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-                }
-                case Consumidor consumidor -> roleList.add(new SimpleGrantedAuthority("ROLE_CONSUMIDOR"));
-                case Produtor produtor -> roleList.add(new SimpleGrantedAuthority("ROLE_PRODUTOR"));
-                default -> {
-                }
-            }
-
-            return new UsernamePasswordAuthenticationToken(
-                    user,
-                    null,
-                    roleList
-            );
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new BadCredentialsException("Invalid password");
         }
 
-        throw new BadCredentialsException("Invalid username or password");
+        // Assign roles based on user type
+        List<GrantedAuthority> authorities;
+        if (user instanceof Admin) {
+            authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else if (user instanceof Produtor) {
+            authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_PRODUTOR"));
+        } else if (user instanceof Consumidor) {
+            authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_CONSUMIDOR"));
+        } else {
+            authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+
+        // Log assigned roles for debugging
+        System.out.println("Assigned roles: " + authorities);
+
+        return new UsernamePasswordAuthenticationToken(user, null, authorities);
     }
 
     @Override

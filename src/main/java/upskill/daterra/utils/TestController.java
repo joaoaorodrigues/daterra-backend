@@ -5,16 +5,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/teste")
 public class TestController {
 
     @Autowired
     private TestAdminCreator adminCreator;
 
-    @GetMapping("/create-admin")
+    @GetMapping("/criar-admin")
     public ResponseEntity<String> createAdmin() {
         adminCreator.createTestAdmin();
-        return ResponseEntity.ok("Admin created successfully");
+        return ResponseEntity.ok("Admin criado com sucesso!");
     }
 }
 
