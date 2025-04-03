@@ -19,11 +19,16 @@ public class AdminController {
         this.produtorRepository = produtorRepository;
     }
 
+    @GetMapping("/produtores")
+    public List<Produtor> getAllProdutores() {
+        return produtorRepository.findAll();
+    }
+
     @GetMapping("/produtores/pendentes")
     public List<Produtor> getPendingProdutores() {
         return produtorRepository.findByIsApproved(false);
     }
-
+    
 
     @PostMapping("/produtores/validar/{id}")
     public ResponseEntity<String> approveProdutor(@PathVariable Long id) {
@@ -43,4 +48,5 @@ public class AdminController {
         return ResponseEntity.ok("Produtor rejeitado e removido.");
     }
 }
+
 
