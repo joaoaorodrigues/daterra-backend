@@ -47,8 +47,8 @@ public class SecurityWebConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login/**", "/produtores/**", "/teste/**", "/session-check").permitAll()
-                        .requestMatchers("/**").permitAll()
-//                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers("/**").permitAll()
+//                        .requestMatchers("/admin/", "/admin/**").hasAuthority("ROLE_ADMIN")
 //                        .requestMatchers("/produtor/**").hasAuthority("ROLE_PRODUTOR")
 //                        .requestMatchers("/cliente/**").hasAuthority("ROLE_CONSUMIDOR")
 //                        .anyRequest().authenticated()
@@ -57,6 +57,7 @@ public class SecurityWebConfig {
 
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
+                            System.out.println("Unauthorized access attempt: " + request.getRequestURI());
                             response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
                         })
                 )

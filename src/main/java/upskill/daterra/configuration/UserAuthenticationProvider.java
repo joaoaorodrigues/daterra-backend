@@ -45,7 +45,6 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Invalid password");
         }
 
-        // Assign roles based on user type
         List<GrantedAuthority> authorities;
         if (user instanceof Admin) {
             authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
@@ -57,7 +56,6 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
             authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
         }
 
-        // Log assigned roles for debugging
         System.out.println("Assigned roles: " + authorities);
 
         return new UsernamePasswordAuthenticationToken(user, null, authorities);

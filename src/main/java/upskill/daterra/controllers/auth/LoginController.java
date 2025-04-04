@@ -44,7 +44,7 @@ public class LoginController {
                 loginModel.getPassword()
         );
 
-        // 2. Authenticate (this uses your UserAuthenticationProvider)
+        // 2. Authenticate (using UserAuthenticationProvider)
         Authentication authenticated = authenticationManager.authenticate(authentication);
 
         // 3. Set security context
@@ -58,7 +58,7 @@ public class LoginController {
         System.out.println("Created session ID: " + session.getId());
         System.out.println("Stored SecurityContext: " + SecurityContextHolder.getContext());
 
-        // 4. Get the already-authenticated user
+        // 4. Get the authenticated user
         User user = (User) authenticated.getPrincipal();
 
         // 5. Determine user type
