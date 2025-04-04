@@ -47,6 +47,7 @@ public class AdminController {
         produtorRepository.deleteById(id);
         return ResponseEntity.ok("Produtor rejeitado e removido.");
     }
+
 }
 
 
