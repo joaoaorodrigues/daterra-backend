@@ -10,7 +10,6 @@ import java.util.List;
 
 public class Produtor extends User {
     private String businessName;
-    private String iban;
 
     @ManyToMany
     @JoinTable(
@@ -23,6 +22,14 @@ public class Produtor extends User {
     private Double longitude;
 
     private boolean isApproved;
+
+    private boolean hasDeliveryOption;
+    private boolean hasPickupOption;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    private String organicCertificate;
 
     public Double getLatitude() {
         return latitude;
@@ -37,14 +44,6 @@ public class Produtor extends User {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
-    }
-
-    public String getIban() {
-        return iban;
-    }
-
-    public void setIban(String iban) {
-        this.iban = iban;
     }
 
     public String getBusinessName() {
@@ -71,7 +70,37 @@ public class Produtor extends User {
         isApproved = approved;
     }
 
+    public boolean hasDeliveryOption() {
+        return hasDeliveryOption;
+    }
 
+    public void setHasDeliveryOption(boolean hasDeliveryOption) {
+        this.hasDeliveryOption = hasDeliveryOption;
+    }
+
+    public boolean hasPickupOption() {
+        return hasPickupOption;
+    }
+
+    public void setHasPickupOption(boolean hasPickupOption) {
+        this.hasPickupOption = hasPickupOption;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getOrganicCertificate() {
+        return organicCertificate;
+    }
+
+    public void setOrganicCertificate(String organicCertificate) {
+        this.organicCertificate = organicCertificate;
+    }
 
     @Override
     public String toString() {
@@ -90,10 +119,13 @@ public class Produtor extends User {
                 ", id=" + id +
                 ", longitude=" + longitude +
                 ", latitude=" + latitude +
-                ", iban='" + iban + '\'' +
                 ", businessName='" + businessName + '\'' +
                 ", categories='" + categories + '\'' +
                 ", approved?='" + isApproved + '\'' +
+                ", delivery option?='" + hasDeliveryOption + '\'' +
+                ", pickup option?='" + hasPickupOption + '\'' +
+                ", organicCertificate='" + organicCertificate + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

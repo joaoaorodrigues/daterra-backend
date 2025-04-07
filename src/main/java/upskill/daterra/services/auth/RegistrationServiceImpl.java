@@ -88,27 +88,28 @@ public class RegistrationServiceImpl implements RegistrationService {
         consumidor.setFirstName(model.getFirstName());
         consumidor.setLastName(model.getLastName());
         consumidor.setBirthDate(model.getBirthDate());
-        consumidor.setPhone(model.getPhone());
-        consumidor.setAddress(model.getAddress());
-        consumidor.setCity(model.getCity());
-        consumidor.setCountry(model.getCountry());
-        consumidor.setPostalCode(model.getPostalCode());
-        consumidor.setNif(model.getNif());
     }
 
     private void mapDadosProdutor(CriarProdutorModel model, Produtor produtor) {
         produtor.setEmail(model.getEmail());
         produtor.setFirstName(model.getFirstName());
         produtor.setLastName(model.getLastName());
-//        produtor.setBirthDate(model.getBirthDate());
+        produtor.setBirthDate(model.getBirthDate());
         produtor.setBusinessName(model.getBusinessName());
         produtor.setPhone(model.getPhone());
         produtor.setAddress(model.getAddress());
         produtor.setCity(model.getCity());
+        produtor.setRegion(model.getRegion());
         produtor.setCountry(model.getCountry());
         produtor.setPostalCode(model.getPostalCode());
         produtor.setNif(model.getNif());
-//        produtor.setIban(model.getIban());
+        produtor.setHasDeliveryOption(model.hasDeliveryOption());
+        produtor.setHasPickupOption(model.hasPickupOption());
+        produtor.setOrganicCertificate(model.getOrganicCertificate());
+        produtor.setDescription(model.getDescription());
+
+
+
         List<Category> categories = new ArrayList<>();
         if (model.getCategories() != null) {
             for (Long categoryId : model.getCategories()) {

@@ -1,38 +1,64 @@
-package upskill.daterra.models;
+package upskill.daterra.models.auth_models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 import upskill.daterra.entities.Category;
+import upskill.daterra.entities.Produtor;
+import upskill.daterra.entities.User;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class CriarProdutorModel {
+public class ProdutorModel {
+
+    private String tipoUtilizador;
     private String email;
     private String businessName;
-    private String description;
     private String firstName;
     private String lastName;
-    private String password;
-    private String confirmPassword;
     private String phone;
     private String address;
     private String city;
+    private String region;
     private String country;
     private String postalCode;
-
-    private String region;
-
+    private List<Category> categories;
+    private String nif;
+    private boolean isApproved;
     private boolean hasDeliveryOption;
     private boolean hasPickupOption;
-
+    private String description;
     private String organicCertificate;
-
-    private List<Long> categories;
-    private String nif;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
+
+
+    public ProdutorModel(Produtor produtor) {
+        this.tipoUtilizador = produtor.getClass().getSimpleName().toUpperCase();
+        this.email = produtor.getEmail();
+        this.businessName = produtor.getBusinessName();
+        this.firstName = produtor.getFirstName();
+        this.lastName = produtor.getLastName();
+        this.birthDate = produtor.getBirthDate();
+        this.phone = produtor.getPhone();
+        this.address = produtor.getAddress();
+        this.city = produtor.getCity();
+        this.region=produtor.getRegion();
+        this.country = produtor.getCountry();
+        this.postalCode = produtor.getPostalCode();
+        this.categories = produtor.getCategories();
+        this.nif = produtor.getNif();
+        this.isApproved = produtor.isApproved();
+        this.hasDeliveryOption = produtor.hasDeliveryOption();
+        this.hasPickupOption = produtor.hasPickupOption();
+        this.description = produtor.getDescription();
+        this.organicCertificate = produtor.getOrganicCertificate();
+    }
+
+    public String getTipoUtilizador() {
+        return tipoUtilizador;
+    }
 
     public String getEmail() {
         return email;
@@ -40,6 +66,14 @@ public class CriarProdutorModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
     }
 
     public String getFirstName() {
@@ -56,22 +90,6 @@ public class CriarProdutorModel {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 
     public String getPhone() {
@@ -114,6 +132,14 @@ public class CriarProdutorModel {
         this.postalCode = postalCode;
     }
 
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
     public String getNif() {
         return nif;
     }
@@ -122,30 +148,15 @@ public class CriarProdutorModel {
         this.nif = nif;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public boolean isApproved() {
+        return isApproved;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setApproved(boolean approved) {
+        isApproved = approved;
     }
 
-    public String getBusinessName() {
-        return businessName;
-    }
-
-    public void setBusinessName(String businessName) {
-        this.businessName = businessName;
-    }
-
-    public List<Long> getCategories() {
-        return categories;
-    }
-    public void setCategories(List<Long> categories) {
-        this.categories = categories;
-    }
-
-    public boolean hasDeliveryOption() {
+    public boolean isHasDeliveryOption() {
         return hasDeliveryOption;
     }
 
@@ -153,7 +164,7 @@ public class CriarProdutorModel {
         this.hasDeliveryOption = hasDeliveryOption;
     }
 
-    public boolean hasPickupOption() {
+    public boolean isHasPickupOption() {
         return hasPickupOption;
     }
 
@@ -183,5 +194,13 @@ public class CriarProdutorModel {
 
     public void setOrganicCertificate(String organicCertificate) {
         this.organicCertificate = organicCertificate;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 }

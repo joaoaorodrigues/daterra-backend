@@ -54,7 +54,14 @@ public class SecurityWebConfig {
 //                        .anyRequest().authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
-
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpStatus.OK.value());
+                        })
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                )
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
                             System.out.println("Unauthorized access attempt: " + request.getRequestURI());

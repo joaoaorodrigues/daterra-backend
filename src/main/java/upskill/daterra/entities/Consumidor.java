@@ -10,12 +10,6 @@ public class Consumidor extends User {
     public String toString() {
         return "Consumidor{" +
                 ", birthDate=" + birthDate +
-                ", nif='" + nif + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", country='" + country + '\'' +
-                ", city='" + city + '\'' +
-                ", address='" + address + '\'' +
-                ", phone='" + phone + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", password='" + password + '\'' +

@@ -38,16 +38,16 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginModel loginModel,
                                                      HttpServletRequest request) {
-        // 1. Create authentication token
+        // Create authentication token
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 loginModel.getEmail(),
                 loginModel.getPassword()
         );
 
-        // 2. Authenticate (using UserAuthenticationProvider)
+        // Authenticate (using UserAuthenticationProvider)
         Authentication authenticated = authenticationManager.authenticate(authentication);
 
-        // 3. Set security context
+        // Set security context
         SecurityContextHolder.getContext().setAuthentication(authenticated);
 
         System.out.println("SecurityContext after login: " +
@@ -58,22 +58,11 @@ public class LoginController {
         System.out.println("Created session ID: " + session.getId());
         System.out.println("Stored SecurityContext: " + SecurityContextHolder.getContext());
 
-        // 4. Get the authenticated user
+        // Get the authenticated user
         User user = (User) authenticated.getPrincipal();
+        String userType = user.getClass().getSimpleName().toUpperCase();
 
-        // 5. Determine user type
-        String userType;
-        if (user instanceof Admin) {
-            userType = "ADMIN";
-        } else if (user instanceof Produtor) {
-            userType = "PRODUTOR";
-        } else if (user instanceof Consumidor) {
-            userType = "CONSUMIDOR";
-        } else {
-            throw new IllegalStateException("Unknown user type");
-        }
-
-        // 6. Build response
+        // Build response
         Map<String, String> responseBody = new HashMap<>();
         responseBody.put("nome", user.getFirstName());
         responseBody.put("email", loginModel.getEmail());

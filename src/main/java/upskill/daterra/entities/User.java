@@ -1,5 +1,7 @@
 package upskill.daterra.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,20 +27,22 @@ public class User implements UserDetails, Serializable {
     protected Long id;
 
     @Column(unique = true)
+    @JsonIgnore
     protected String email;
+    @JsonIgnore
     protected String password;
     protected String firstName;
     protected String lastName;
     protected String phone;
     protected String address;
     protected String city;
+    protected String region;
     protected String country;
     protected String postalCode;
     protected String nif;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     protected LocalDate birthDate;
-
-
 
     public LocalDate getBirthDate() {
         return birthDate;
@@ -135,12 +139,14 @@ public class User implements UserDetails, Serializable {
         this.firstName = firstName;
     }
 
+    public String getRegion() {return region;}
+    public void setRegion(String region) {this.region = region;}
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         return Collections.emptyList();
     }
-
 
     @Override
     public String getUsername() { return email; }
