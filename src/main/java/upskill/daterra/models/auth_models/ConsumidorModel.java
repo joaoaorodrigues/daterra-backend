@@ -17,7 +17,7 @@ public class ConsumidorModel {
     private LocalDate birthDate;
 
     public ConsumidorModel (Consumidor consumidor){
-        this.tipoUtilizador = consumidor.getClass().getSimpleName().toUpperCase();
+        this.tipoUtilizador = consumidor.getClass().getSimpleName().toLowerCase();
         this.email = consumidor.getEmail();
         this.firstName = consumidor.getFirstName();
         this.lastName = consumidor.getLastName();

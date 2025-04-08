@@ -55,7 +55,7 @@ public class AuthController {
         public UserModel(User user) {
             this.nome = user.getFirstName();
             this.email = user.getEmail();
-            this.tipoUtilizador = user instanceof Admin ? "ADMIN" :
+            this.tipoUtilizador = user instanceof Admin ? "admin" :
                     user instanceof Produtor ? "PRODUTOR" : "CONSUMIDOR";
         }
 

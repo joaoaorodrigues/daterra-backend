@@ -35,7 +35,7 @@ public class ProdutorModel {
 
 
     public ProdutorModel(Produtor produtor) {
-        this.tipoUtilizador = produtor.getClass().getSimpleName().toUpperCase();
+        this.tipoUtilizador = produtor.getClass().getSimpleName().toLowerCase();
         this.email = produtor.getEmail();
         this.businessName = produtor.getBusinessName();
         this.firstName = produtor.getFirstName();
