@@ -26,6 +26,7 @@ public class ProdutorController {
                 .filter(produtor -> produtor.getId() != null)
                 .map(produtor -> {
                     ProdutorModel model = new ProdutorModel(produtor);
+                    System.out.println(model);
                     return ResponseEntity.ok(model);
                 })
                 .orElseGet(() -> {
