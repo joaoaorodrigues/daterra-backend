@@ -34,6 +34,8 @@ public class ProdutorController {
                 });
     }
 
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Produtor> getProdutorByEmail(@ModelAttribute("id") Produtor produtor) {
         if(produtor == null || produtor.getId() == null) {

@@ -11,6 +11,7 @@ import upskill.daterra.entities.Category;
 import upskill.daterra.entities.Produto;
 import upskill.daterra.entities.Produtor;
 import upskill.daterra.models.ProdutorMapInfo;
+import upskill.daterra.models.auth_models.ProdutorModel;
 import upskill.daterra.services.guest.ProdutoresService;
 import upskill.daterra.services.produto.ProdutoService;
 
@@ -37,10 +38,11 @@ public class PublicController {
     }
 
     @GetMapping("/produtores/{produtorId}")
-    public ResponseEntity<Produtor> getProdutor(@PathVariable Long produtorId) {
-        Optional<Produtor> produtor = produtoresService.getProdutor(produtorId);
-        if (produtor.isPresent()) {
-            return ResponseEntity.ok(produtor.get());
+    public ResponseEntity<ProdutorModel> getProdutor(@PathVariable Long produtorId) {
+        Optional<Produtor> produtorOptional = produtoresService.getProdutor(produtorId);
+        if (produtorOptional.isPresent()) {
+            Produtor produtor = produtorOptional.get();
+            return ResponseEntity.ok(new ProdutorModel (produtor));
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Produtor não encontrado");
         }

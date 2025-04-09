@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import upskill.daterra.entities.Produtor;
 import upskill.daterra.models.ProdutorMapInfo;
+import upskill.daterra.models.auth_models.ProdutorModel;
 import upskill.daterra.repositories.ProdutorRepository;
 
 import java.util.ArrayList;
