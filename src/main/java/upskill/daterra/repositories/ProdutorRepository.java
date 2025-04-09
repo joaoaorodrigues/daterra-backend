@@ -12,4 +12,6 @@ public interface ProdutorRepository extends JpaRepository<Produtor, Long> {
     Optional<Produtor> findByEmail(String email);
     List<Produtor> findByIsApproved(boolean isApproved);
 
+    long count();
+
 }

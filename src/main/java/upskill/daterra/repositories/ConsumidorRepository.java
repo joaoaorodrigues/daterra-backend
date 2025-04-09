@@ -7,4 +7,7 @@ import java.util.Optional;
 
 public interface ConsumidorRepository extends JpaRepository<Consumidor, Long> {
     Optional<Consumidor> findByEmail(String email);
+
+    long count();
+
 }
