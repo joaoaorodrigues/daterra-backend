@@ -3,7 +3,7 @@ package upskill.daterra.entities;
 import jakarta.persistence.*;
 
 @Entity
-public class Images {
+public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,10 +12,10 @@ public class Images {
     private String fileName;
     private String contentType;
 
-    public Images() {
+    public Image() {
     }
 
-    public Images(String fileName, String contentType) {
+    public Image(String fileName, String contentType) {
         this.fileName = fileName;
         this.contentType = contentType;
     }

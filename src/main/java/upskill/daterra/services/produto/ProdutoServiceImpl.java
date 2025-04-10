@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import upskill.daterra.entities.Category;
-import upskill.daterra.entities.Images;
+import upskill.daterra.entities.Image;
 import upskill.daterra.entities.Produto;
 import upskill.daterra.repositories.CategoryRepository;
 import upskill.daterra.repositories.ImagesRepository;
@@ -45,7 +45,7 @@ public class ProdutoServiceImpl implements ProdutoService {
                     produto.setPreco(produtoAtualizado.getPreco());
                     produto.setQuantidade(produtoAtualizado.getQuantidade());
                     produto.setImposto(produtoAtualizado.getImposto());
-                    Images imagem = new Images(
+                    Image imagem = new Image(
                             arquivo.getOriginalFilename(),
                             arquivo.getContentType()
                     );

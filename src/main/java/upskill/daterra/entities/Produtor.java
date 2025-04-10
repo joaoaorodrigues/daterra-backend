@@ -31,6 +31,9 @@ public class Produtor extends User {
 
     private String organicCertificate;
 
+    private String profileImageUrl;
+    private String coverImageUrl;
+
     public Double getLatitude() {
         return latitude;
     }
@@ -100,6 +103,22 @@ public class Produtor extends User {
 
     public void setOrganicCertificate(String organicCertificate) {
         this.organicCertificate = organicCertificate;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getCoverImageUrl() {
+        return coverImageUrl;
+    }
+
+    public void setCoverImageUrl(String coverImageUrl) {
+        this.coverImageUrl = coverImageUrl;
     }
 
     @Override

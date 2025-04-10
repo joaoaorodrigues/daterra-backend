@@ -1,15 +1,19 @@
 package upskill.daterra.controllers.produtor;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import upskill.daterra.entities.Category;
 import upskill.daterra.entities.Produtor;
-import upskill.daterra.models.UpdateProdutorModel;
 import upskill.daterra.models.auth_models.ProdutorModel;
 import upskill.daterra.repositories.CategoryRepository;
 import upskill.daterra.repositories.ProdutorRepository;
+import upskill.daterra.services.image.ImageService;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +26,8 @@ public class ProdutorController {
     private ProdutorRepository produtorRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private ImageService imageService;
 
     @GetMapping("/perfil")
     public ResponseEntity<ProdutorModel> getCurrentProdutor() {
@@ -32,7 +38,7 @@ public class ProdutorController {
                 .filter(produtor -> produtor.getId() != null)
                 .map(produtor -> {
                     ProdutorModel model = new ProdutorModel(produtor);
-                    System.out.println(model);
+                    System.out.println("modelo produtor:"+model);
                     return ResponseEntity.ok(model);
                 })
                 .orElseGet(() -> {
@@ -40,36 +46,60 @@ public class ProdutorController {
                 });
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> updateProfile(@RequestBody UpdateProdutorModel produtorModel) {
+    @PutMapping(value= "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateProfile(
+            @RequestPart ("userData") String userDataJson,
+            @RequestPart(value="profileImage", required = false)MultipartFile profileImage,
+            @RequestPart(value="coverImage", required = false) MultipartFile coverImage
+            ) {
+
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Optional<Produtor> optionalProdutor = produtorRepository.findByEmail(email);
         if (optionalProdutor.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+        try {
 
-        Produtor produtor = optionalProdutor.get();
+            ObjectMapper objectMapper = new ObjectMapper();
+            ProdutorModel produtorModel = objectMapper.readValue(userDataJson, ProdutorModel.class);
 
-        produtor.setFirstName(produtorModel.getFirstName());
-        produtor.setLastName(produtorModel.getLastName());
-        produtor.setPhone(produtorModel.getPhone());
-        produtor.setAddress(produtorModel.getAddress());
-        produtor.setCity(produtorModel.getCity());
-        produtor.setRegion(produtorModel.getRegion());
-        produtor.setPostalCode(produtorModel.getPostalCode());
-        produtor.setBusinessName(produtorModel.getBusinessName());
-        produtor.setDescription(produtorModel.getDescription());
-        produtor.setHasPickupOption(produtorModel.isHasPickupOption());
-        produtor.setHasDeliveryOption(produtorModel.isHasDeliveryOption());
-        produtor.setOrganicCertificate(produtorModel.getOrganicCertificate());
+            Produtor produtor = optionalProdutor.get();
 
-        List<Category> categories = categoryRepository.findAllById(produtorModel.getCategories());
-        produtor.setCategories(categories);
+            produtor.setFirstName(produtorModel.getFirstName());
+            produtor.setLastName(produtorModel.getLastName());
+            produtor.setPhone(produtorModel.getPhone());
+            produtor.setAddress(produtorModel.getAddress());
+            produtor.setCity(produtorModel.getCity());
+            produtor.setRegion(produtorModel.getRegion());
+            produtor.setPostalCode(produtorModel.getPostalCode());
+            produtor.setBusinessName(produtorModel.getBusinessName());
+            produtor.setDescription(produtorModel.getDescription());
+            produtor.setHasPickupOption(produtorModel.isHasPickupOption());
+            produtor.setHasDeliveryOption(produtorModel.isHasDeliveryOption());
+            produtor.setOrganicCertificate(produtorModel.getOrganicCertificate());
 
-        produtorRepository.save(produtor);
+            List<Category> categories = categoryRepository.findAllById(produtorModel.getCategories());
+            produtor.setCategories(categories);
 
-        return ResponseEntity.ok(new ProdutorModel(produtor));
+            if (profileImage != null && !profileImage.isEmpty()) {
+                String profileImageUrl = imageService.storeImageFile(profileImage);
+                produtor.setProfileImageUrl(profileImageUrl);
+            }
+
+            if (coverImage != null && !coverImage.isEmpty()) {
+                String coverImagePath = imageService.storeImageFile(coverImage);
+                produtor.setCoverImageUrl(coverImagePath);
+            }
+
+            produtorRepository.save(produtor);
+
+            return ResponseEntity.ok(new ProdutorModel(produtor));
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.badRequest().body("Invalid JSON format");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error updating profile");
+        }
     }
 
 

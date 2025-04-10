@@ -15,13 +15,13 @@ public class Produto {
     private Integer quantidade;
     @OneToOne
     @JoinColumn(name = "imagem_id")
-    private Images imagem;
+    private Image imagem;
 
-    public Images getImagem() {
+    public Image getImagem() {
         return imagem;
     }
 
-    public void setImagem(Images imagem) {
+    public void setImagem(Image imagem) {
         this.imagem = imagem;
     }
 

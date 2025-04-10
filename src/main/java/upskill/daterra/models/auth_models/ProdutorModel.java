@@ -8,6 +8,7 @@ import upskill.daterra.entities.User;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProdutorModel {
 
@@ -22,7 +23,7 @@ public class ProdutorModel {
     private String region;
     private String country;
     private String postalCode;
-    private List<Category> categories;
+    private List<Long> categories;
     private String nif;
     private boolean isApproved;
     private boolean hasDeliveryOption;
@@ -32,6 +33,8 @@ public class ProdutorModel {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
+    private String profileImageUrl;
+    private String coverImageUrl;
 
 
     public ProdutorModel() {
@@ -50,13 +53,17 @@ public class ProdutorModel {
         this.region=produtor.getRegion();
         this.country = produtor.getCountry();
         this.postalCode = produtor.getPostalCode();
-        this.categories = produtor.getCategories();
+        this.categories = produtor.getCategories().stream()
+                .map(Category::getId)
+                .collect(Collectors.toList());
         this.nif = produtor.getNif();
         this.isApproved = produtor.isApproved();
         this.hasDeliveryOption = produtor.hasDeliveryOption();
         this.hasPickupOption = produtor.hasPickupOption();
         this.description = produtor.getDescription();
         this.organicCertificate = produtor.getOrganicCertificate();
+        this.profileImageUrl = produtor.getProfileImageUrl();
+        this.coverImageUrl = produtor.getCoverImageUrl();
     }
 
     public String getTipoUtilizador() {
@@ -135,11 +142,11 @@ public class ProdutorModel {
         this.postalCode = postalCode;
     }
 
-    public List<Category> getCategories() {
+    public List<Long> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(List<Long> categories) {
         this.categories = categories;
     }
 
@@ -205,5 +212,21 @@ public class ProdutorModel {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getCoverImageUrl() {
+        return coverImageUrl;
+    }
+
+    public void setCoverImageUrl(String coverImageUrl) {
+        this.coverImageUrl = coverImageUrl;
     }
 }
