@@ -1,4 +1,4 @@
-package upskill.daterra.models.auth_models;
+package upskill.daterra.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,7 +9,7 @@ import upskill.daterra.entities.User;
 import java.time.LocalDate;
 import java.util.List;
 
-public class ProdutorModel {
+public class UpdateProdutorModel {
 
     private String tipoUtilizador;
     private String email;
@@ -22,7 +22,7 @@ public class ProdutorModel {
     private String region;
     private String country;
     private String postalCode;
-    private List<Category> categories;
+    private List<Long> categories;
     private String nif;
     private boolean isApproved;
     private boolean hasDeliveryOption;
@@ -34,30 +34,9 @@ public class ProdutorModel {
     private LocalDate birthDate;
 
 
-    public ProdutorModel() {
+    public UpdateProdutorModel() {
     }
 
-    public ProdutorModel(Produtor produtor) {
-        this.tipoUtilizador = produtor.getClass().getSimpleName().toLowerCase();
-        this.email = produtor.getEmail();
-        this.businessName = produtor.getBusinessName();
-        this.firstName = produtor.getFirstName();
-        this.lastName = produtor.getLastName();
-        this.birthDate = produtor.getBirthDate();
-        this.phone = produtor.getPhone();
-        this.address = produtor.getAddress();
-        this.city = produtor.getCity();
-        this.region=produtor.getRegion();
-        this.country = produtor.getCountry();
-        this.postalCode = produtor.getPostalCode();
-        this.categories = produtor.getCategories();
-        this.nif = produtor.getNif();
-        this.isApproved = produtor.isApproved();
-        this.hasDeliveryOption = produtor.hasDeliveryOption();
-        this.hasPickupOption = produtor.hasPickupOption();
-        this.description = produtor.getDescription();
-        this.organicCertificate = produtor.getOrganicCertificate();
-    }
 
     public String getTipoUtilizador() {
         return tipoUtilizador;
@@ -135,11 +114,11 @@ public class ProdutorModel {
         this.postalCode = postalCode;
     }
 
-    public List<Category> getCategories() {
+    public List<Long> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(List<Long> categories) {
         this.categories = categories;
     }
 
@@ -207,3 +186,4 @@ public class ProdutorModel {
         this.birthDate = birthDate;
     }
 }
+

@@ -4,10 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import upskill.daterra.entities.Category;
 import upskill.daterra.entities.Produtor;
+import upskill.daterra.models.UpdateProdutorModel;
 import upskill.daterra.models.auth_models.ProdutorModel;
+import upskill.daterra.repositories.CategoryRepository;
 import upskill.daterra.repositories.ProdutorRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -16,6 +20,8 @@ public class ProdutorController {
 
     @Autowired
     private ProdutorRepository produtorRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @GetMapping("/perfil")
     public ResponseEntity<ProdutorModel> getCurrentProdutor() {
@@ -34,32 +40,38 @@ public class ProdutorController {
                 });
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<?> updateProfile(@RequestBody UpdateProdutorModel produtorModel) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Produtor> getProdutorByEmail(@ModelAttribute("id") Produtor produtor) {
-        if(produtor == null || produtor.getId() == null) {
+        Optional<Produtor> optionalProdutor = produtorRepository.findByEmail(email);
+        if (optionalProdutor.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(produtor);
+
+        Produtor produtor = optionalProdutor.get();
+
+        produtor.setFirstName(produtorModel.getFirstName());
+        produtor.setLastName(produtorModel.getLastName());
+        produtor.setPhone(produtorModel.getPhone());
+        produtor.setAddress(produtorModel.getAddress());
+        produtor.setCity(produtorModel.getCity());
+        produtor.setRegion(produtorModel.getRegion());
+        produtor.setPostalCode(produtorModel.getPostalCode());
+        produtor.setBusinessName(produtorModel.getBusinessName());
+        produtor.setDescription(produtorModel.getDescription());
+        produtor.setHasPickupOption(produtorModel.isHasPickupOption());
+        produtor.setHasDeliveryOption(produtorModel.isHasDeliveryOption());
+        produtor.setOrganicCertificate(produtorModel.getOrganicCertificate());
+
+        List<Category> categories = categoryRepository.findAllById(produtorModel.getCategories());
+        produtor.setCategories(categories);
+
+        produtorRepository.save(produtor);
+
+        return ResponseEntity.ok(new ProdutorModel(produtor));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Produtor> updateProdutor(@PathVariable Long id, @RequestBody Produtor produtor) {
-        if (!produtorRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        produtor.setId(id);
-        Produtor updatedProdutor = produtorRepository.save(produtor);
-        return ResponseEntity.ok(updatedProdutor);
-    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProdutor(@PathVariable Long id) {
-        if (!produtorRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        produtorRepository.deleteById(id);
-        return ResponseEntity.ok("Produtor apagado com sucesso");
-    }
+
 }
