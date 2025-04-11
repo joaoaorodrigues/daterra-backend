@@ -2,6 +2,7 @@ package upskill.daterra.controllers.produtor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -62,6 +63,7 @@ public class ProdutorController {
         try {
 
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             ProdutorModel produtorModel = objectMapper.readValue(userDataJson, ProdutorModel.class);
 
             Produtor produtor = optionalProdutor.get();
@@ -96,8 +98,10 @@ public class ProdutorController {
 
             return ResponseEntity.ok(new ProdutorModel(produtor));
         } catch (JsonProcessingException e) {
+            System.out.println("erro ao converter json"+e.getMessage());
             return ResponseEntity.badRequest().body("Invalid JSON format");
         } catch (Exception e) {
+            System.out.println("outro erro"+e.getMessage());
             return ResponseEntity.internalServerError().body("Error updating profile");
         }
     }
