@@ -49,7 +49,7 @@ public class ProdutoController {
             @RequestParam("preco") Double preco,
             @RequestParam("quantidade") Integer quantidade,
             @RequestParam("categorias[]") Integer[] categorias,
-            @RequestPart(value = "productImage", required = false) MultipartFile productImage) throws IOException {
+            @RequestPart(value = "image", required = false) MultipartFile productImage) throws IOException {
 
         List<Integer> lista_categorias = Arrays.asList(categorias);
 
