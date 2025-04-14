@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 import upskill.daterra.entities.Category;
 import upskill.daterra.entities.Produtor;
-import upskill.daterra.entities.User;
 
 import java.time.LocalDate;
 import java.util.List;

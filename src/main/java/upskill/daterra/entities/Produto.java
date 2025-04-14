@@ -2,6 +2,8 @@ package upskill.daterra.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Produto {
     @Id
@@ -11,27 +13,17 @@ public class Produto {
     private String nome;
     private String descricao;
     private Double preco;
-    private Double imposto;
     private Integer quantidade;
-    @OneToOne
-    @JoinColumn(name = "imagem_id")
-    private Image imagem;
+    private String ProductImageUrl;
 
-    public Image getImagem() {
-        return imagem;
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "produto_category",
+            joinColumns = @JoinColumn(name = "produto_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories;
 
-    public void setImagem(Image imagem) {
-        this.imagem = imagem;
-    }
-
-    public Double getImposto() {
-        return imposto;
-    }
-
-    public void setImposto(Double imposto) {
-        this.imposto = imposto;
-    }
 
     @ManyToOne
     @JoinColumn(name = "produtor_id", nullable = false)
@@ -54,4 +46,19 @@ public class Produto {
 
     public Produtor getProdutor() { return produtor; }
     public void setProdutor(Produtor produtor) { this.produtor = produtor; }
+
+    public String getProductImageUrl() {
+        return ProductImageUrl;
+    }
+
+    public void setProductImageUrl(String productImageUrl) {
+        ProductImageUrl = productImageUrl;
+    }
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
 }

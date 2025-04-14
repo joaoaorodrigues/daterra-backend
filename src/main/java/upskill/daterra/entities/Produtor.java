@@ -18,6 +18,11 @@ public class Produtor extends User {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private List<Category> categories;
+
+    @OneToMany
+    private List<Produto> produtos;
+
+
     private Double latitude;
     private Double longitude;
 

@@ -9,12 +9,16 @@ import upskill.daterra.entities.Produto;
 import upskill.daterra.repositories.CategoryRepository;
 import upskill.daterra.repositories.ImagesRepository;
 import upskill.daterra.repositories.ProdutoRepository;
+import upskill.daterra.services.image.ImageService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ProdutoServiceImpl implements ProdutoService {
+
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     private ProdutoRepository produtoRepository;
@@ -25,7 +29,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Autowired
     private ImagesRepository imagesRepository;
 
-    public Produto criarProduto(Long userId, Produto produto) {
+    public Produto criarProduto(Produto produto) {
         return produtoRepository.save(produto);
     }
 
@@ -37,21 +41,21 @@ public class ProdutoServiceImpl implements ProdutoService {
         return produtoRepository.findByIdAndProdutorId(id, produtorId);
     }
 
-    public Produto atualizarProduto(Long id, Long produtorId, Produto produtoAtualizado, MultipartFile arquivo) {
+    public Produto atualizarProduto(Long id, Long produtorId, Produto produtoAtualizado, MultipartFile productImage) {
         return produtoRepository.findByIdAndProdutorId(id, produtorId)
                 .map(produto -> {
                     produto.setNome(produtoAtualizado.getNome());
                     produto.setDescricao(produtoAtualizado.getDescricao());
                     produto.setPreco(produtoAtualizado.getPreco());
                     produto.setQuantidade(produtoAtualizado.getQuantidade());
-                    produto.setImposto(produtoAtualizado.getImposto());
                     Image imagem = new Image(
-                            arquivo.getOriginalFilename(),
-                            arquivo.getContentType()
+                            productImage.getOriginalFilename(),
+                            productImage.getContentType()
                     );
                     imagesRepository.save(imagem);
 
-                    produto.setImagem(imagem);
+                    String productImagePath = imageService.storeImageFile(productImage);
+                    produto.setProductImageUrl(productImagePath);
 
                     return produtoRepository.save(produto);
                 }).orElseThrow(() -> new RuntimeException("Produto não encontrado ou não tem permissão para editar."));
