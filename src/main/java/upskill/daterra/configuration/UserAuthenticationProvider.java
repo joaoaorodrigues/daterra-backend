@@ -45,16 +45,12 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Invalid password");
         }
 
-        List<GrantedAuthority> authorities;
-        if (user instanceof Admin) {
-            authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        } else if (user instanceof Produtor) {
-            authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_PRODUTOR"));
-        } else if (user instanceof Consumidor) {
-            authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_CONSUMIDOR"));
-        } else {
-            authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-        }
+        List<GrantedAuthority> authorities = switch (user) {
+            case Admin admin -> Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            case Produtor produtor -> Collections.singletonList(new SimpleGrantedAuthority("ROLE_PRODUTOR"));
+            case Consumidor consumidor -> Collections.singletonList(new SimpleGrantedAuthority("ROLE_CONSUMIDOR"));
+            default -> Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        };
 
         System.out.println("Assigned roles: " + authorities);
 

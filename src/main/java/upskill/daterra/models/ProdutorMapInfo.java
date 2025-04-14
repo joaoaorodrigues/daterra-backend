@@ -9,7 +9,7 @@ public class ProdutorMapInfo {
     private Long idProdutor;
     private String businessName;
     private String address;
-    private List<Category> categories;
+    private List<Long> categories;
     private double latitude;
     private double longitude;
 
@@ -37,11 +37,11 @@ public class ProdutorMapInfo {
         this.address = address;
     }
 
-    public List<Category> getCategory() {
+    public List<Long> getCategory() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(List<Long> categories) {
         this.categories = categories;
     }
 
@@ -61,7 +61,7 @@ public class ProdutorMapInfo {
         this.longitude = longitude;
     }
 
-    public List<Category> getCategories() {
+    public List<Long> getCategories() {
         return categories;
     }
 
