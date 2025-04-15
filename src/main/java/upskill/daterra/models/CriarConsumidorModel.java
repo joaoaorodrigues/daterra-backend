@@ -14,14 +14,6 @@ public class CriarConsumidorModel {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
 
-//    private String phone;
-//    private String address;
-//    private String city;
-//    private String country;
-//    private String postalCode;
-//    private String nif;
-
-
     public LocalDate getBirthDate() {
         return birthDate;
     }

@@ -32,8 +32,7 @@ public class ProdutorController {
 
     @GetMapping("/perfil")
     public ResponseEntity<ProdutorModel> getCurrentProdutor() {
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication().getName();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         return produtorRepository.findByEmail(email)
                 .filter(produtor -> produtor.getId() != null)
