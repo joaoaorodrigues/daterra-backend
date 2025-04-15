@@ -29,9 +29,9 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Autowired
     private ImagesRepository imagesRepository;
 
-    public Produto criarProduto(Produto produto) {
-        return produtoRepository.save(produto);
-    }
+//    public Produto criarProduto(Produto produto) {
+//        return produtoRepository.save(produto);
+//    }
 
     public List<Produto> listarProdutosPorProdutor(Long produtorId) {
         return produtoRepository.findByProdutorId(produtorId);
@@ -44,10 +44,10 @@ public class ProdutoServiceImpl implements ProdutoService {
     public Produto atualizarProduto(Long id, Long produtorId, Produto produtoAtualizado, MultipartFile productImage) {
         return produtoRepository.findByIdAndProdutorId(id, produtorId)
                 .map(produto -> {
-                    produto.setNome(produtoAtualizado.getNome());
-                    produto.setDescricao(produtoAtualizado.getDescricao());
-                    produto.setPreco(produtoAtualizado.getPreco());
-                    produto.setQuantidade(produtoAtualizado.getQuantidade());
+                    produto.setName(produtoAtualizado.getName());
+                    produto.setDescription(produtoAtualizado.getDescription());
+                    produto.setPrice(produtoAtualizado.getPrice());
+                    produto.setQuantity(produtoAtualizado.getQuantity());
                     Image imagem = new Image(
                             productImage.getOriginalFilename(),
                             productImage.getContentType()

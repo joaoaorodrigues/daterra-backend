@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProdutoModel {
-    private String nome;
-    private String descricao;
-    private Double preco;
-    private Integer quantidade;
+    private String name;
+    private String description;
+    private Double price;
+    private Integer quantity;
     private String productImageUrl;
     private List<Long> categories;
 
@@ -19,10 +19,10 @@ public class ProdutoModel {
 
     }
     public ProdutoModel(Produto produto) {
-        this.nome = produto.getNome();
-        this.descricao = produto.getDescricao();
-        this.preco = produto.getPreco();
-        this.quantidade = produto.getQuantidade();
+        this.name = produto.getName();
+        this.description = produto.getDescription();
+        this.price = produto.getPrice();
+        this.quantity = produto.getQuantity();
         this.productImageUrl = produto.getProductImageUrl();
         this.categories = produto.getCategories().stream()
                 .map(Category::getId)
@@ -31,36 +31,36 @@ public class ProdutoModel {
 
 
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Double getPreco() {
-        return preco;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setPreco(Double preco) {
-        this.preco = preco;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
-    public Integer getQuantidade() {
-        return quantidade;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setQuantidade(Integer quantidade) {
-        this.quantidade = quantidade;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public String getProductImageUrl() {

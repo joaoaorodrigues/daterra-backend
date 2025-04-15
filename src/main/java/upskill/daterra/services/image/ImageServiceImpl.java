@@ -13,6 +13,7 @@ import java.util.UUID;
 public class ImageServiceImpl implements ImageService{
 
     private final Path imageFolder = Paths.get("uploads");
+    private final String defaultImagesFolder = "uploads";
     @Override
     public String storeImageFile(MultipartFile imageFile) {
         try {
@@ -33,6 +34,14 @@ public class ImageServiceImpl implements ImageService{
         } catch (IOException e) {
             throw new RuntimeException("Failed to store image file: " + e.getMessage(), e);
         }
+    }
+
+    public String getDefaultImageUrl(String fileName) {
+        Path filePath = Paths.get(defaultImagesFolder, fileName);
+        if (Files.exists(filePath)) {
+            return fileName;
+        }
+        return fileName;
     }
 
     private String getFileExtension(String filename) {

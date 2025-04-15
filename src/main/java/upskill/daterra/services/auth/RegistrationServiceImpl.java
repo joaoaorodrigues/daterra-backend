@@ -13,6 +13,7 @@ import upskill.daterra.models.CriarProdutorModel;
 import upskill.daterra.repositories.CategoryRepository;
 import upskill.daterra.repositories.UserRepository;
 import upskill.daterra.services.guest.GeocodingService;
+import upskill.daterra.services.image.ImageService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,17 +25,19 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final CategoryRepository categoryRepository;
     private final PasswordEncoder passwordEncoder;
     private final GeocodingService geocodingService;
+    private final ImageService imageService;
 
 
     @Autowired
     public RegistrationServiceImpl(UserRepository userRepository,
                                    CategoryRepository categoryRepository,
                                    PasswordEncoder passwordEncoder,
-                                   GeocodingService geocodingService) {
+                                   GeocodingService geocodingService, ImageService imageService) {
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.passwordEncoder = passwordEncoder;
         this.geocodingService = geocodingService;
+        this.imageService = imageService;
     }
 
     @Override
@@ -107,8 +110,8 @@ public class RegistrationServiceImpl implements RegistrationService {
         produtor.setHasPickupOption(model.hasPickupOption());
         produtor.setOrganicCertificate(model.getOrganicCertificate());
         produtor.setDescription(model.getDescription());
-
-
+        String defaultProfileImageUrl = "profile-default.svg";
+        produtor.setProfileImageUrl(defaultProfileImageUrl);
 
         List<Category> categories = new ArrayList<>();
         if (model.getCategories() != null) {

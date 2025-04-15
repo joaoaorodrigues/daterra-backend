@@ -19,9 +19,14 @@ import upskill.daterra.services.image.ImageService;
 import upskill.daterra.services.produto.ProdutoService;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import jakarta.servlet.http.HttpServletRequest;
+
+
 
 @RestController
 @RequestMapping("/produtor/produtos")
@@ -42,34 +47,58 @@ public class ProdutoController {
     @Autowired
     private ImageService imageService;
 
-    @PostMapping("/criar")
-    public ResponseEntity<Produto> criarProduto(
-            @RequestParam("nome") String nome,
-            @RequestParam("descricao") String descricao,
-            @RequestParam("preco") Double preco,
-            @RequestParam("quantidade") Integer quantidade,
-            @RequestParam("categorias[]") Integer[] categorias,
-            @RequestPart(value = "image", required = false) MultipartFile productImage) throws IOException {
+    private static final Logger logger = LoggerFactory.getLogger(ProdutoController.class);
 
-        List<Integer> lista_categorias = Arrays.asList(categorias);
 
-        System.out.println("lista_categorias" + lista_categorias);
+    @PostMapping(value="/criar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public  ResponseEntity<?> criarProduto(
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("price") Double price,
+            @RequestParam("quantity") Integer quantity,
+            @RequestParam("categories") List<Long> categories,
+            @RequestPart(value = "productImageUrl", required = false) MultipartFile productImage,
+            HttpServletRequest request) throws IOException {
+
+        System.out.println("Received request with Content-Type: " + request.getContentType());
+        System.out.println("Categories : " + categories);
+        System.out.println("Product image : " + (productImage != null ? productImage.getOriginalFilename() : "sem imagem"));
+
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<Produtor> optionalProdutor = produtorRepository.findByEmail(email);
 
-        Produto produto = new Produto();
-        produto.setNome(nome);
-        produto.setDescricao(descricao);
-        produto.setPreco(preco);
-        produto.setQuantidade(quantidade);
-        produto.setProdutor(optionalProdutor.get());
+        try {
 
-        if (productImage != null && !productImage.isEmpty()) {
-            String productImagePath = imageService.storeImageFile(productImage);
-            produto.setProductImageUrl(productImagePath);
+            Produto produto = new Produto();
+            produto.setName(name);
+            produto.setDescription(description);
+            produto.setPrice(price);
+            produto.setQuantity(quantity);
+            produto.setProdutor(optionalProdutor.get());
+
+            List<Category> productCategories = new ArrayList<>();
+            if (categories != null) {
+                for (Long categoryId : categories) {
+                    Category category = categoryRepository.findById(categoryId).orElse(null);
+                    if (category != null) {
+                        productCategories.add(category);
+                    }
+                }
+            }
+            produto.setCategories(productCategories);
+
+            if (productImage != null && !productImage.isEmpty()) {
+                String productImagePath = imageService.storeImageFile(productImage);
+                produto.setProductImageUrl(productImagePath);
+            }
+
+            produtoRepository.save(produto);
+
+            return ResponseEntity.ok(produto);
+        } catch (Exception e) {
+            System.out.println("outro erro"+e.getMessage());
+            return ResponseEntity.internalServerError().body("Error adding produto");
         }
-        Produto createdProduto = produtoService.criarProduto(produto);
-        return ResponseEntity.ok(createdProduto);
     }
 
     @GetMapping("/{produtorId}")
@@ -100,10 +129,10 @@ public class ProdutoController {
 
             Produto produto = optionalProduto.get();
 
-            produto.setNome(produtoModel.getNome());
-            produto.setDescricao(produtoModel.getDescricao());
-            produto.setPreco(produtoModel.getPreco());
-            produto.setQuantidade(produtoModel.getQuantidade());
+            produto.setName(produtoModel.getName());
+            produto.setDescription(produtoModel.getDescription());
+            produto.setPrice(produtoModel.getPrice());
+            produto.setQuantity(produtoModel.getQuantity());
             List<Category> categories = categoryRepository.findAllById(produtoModel.getCategories());
             produto.setCategories(categories);
 
