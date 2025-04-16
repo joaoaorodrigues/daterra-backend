@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import upskill.daterra.entities.Consumidor;
+import upskill.daterra.entities.User;
+import upskill.daterra.models.UpdateConsumidorModel;
 import upskill.daterra.models.auth_models.ConsumidorModel;
 import upskill.daterra.repositories.ConsumidorRepository;
 import upskill.daterra.services.image.ImageService;
@@ -28,7 +30,7 @@ public class ConsumidorController {
 
     @GetMapping("/perfil")
     public ResponseEntity<ConsumidorModel> getCurrentConsumidor() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail();
 
         return consumidorRepository.findByEmail(email)
                 .filter(consumidor -> consumidor.getId() != null)
@@ -50,23 +52,19 @@ public class ConsumidorController {
         consumidorRepository.deleteById(id);
         return ResponseEntity.ok("Consumidor deletado com sucesso");
     }
-    @PutMapping(value= "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value= "/update", consumes = MediaType.ALL_VALUE)
     public ResponseEntity<?> updateProfile(
-            @RequestPart ("userData") String userDataJson,
+            @ModelAttribute UpdateConsumidorModel consumidorModel,
             @RequestPart(value="profileImage", required = false) MultipartFile profileImage
     ) {
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail();
 
         Optional<Consumidor> optionalConsumidor = consumidorRepository.findByEmail(email);
         if (optionalConsumidor.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         try {
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
-            ConsumidorModel consumidorModel = objectMapper.readValue(userDataJson, ConsumidorModel.class);
 
             Consumidor consumidor = optionalConsumidor.get();
 
@@ -75,7 +73,7 @@ public class ConsumidorController {
             consumidor.setPhone(consumidorModel.getPhone());
             consumidor.setAddress(consumidorModel.getAddress());
             consumidor.setCity(consumidorModel.getCity());
-            consumidor.setRegion(consumidorModel.getRegion());
+            consumidor.setRegion(consumidorModel.getCountry());
             consumidor.setPostalCode(consumidorModel.getPostalCode());
             consumidor.setNif(consumidorModel.getNif());
 
@@ -88,9 +86,6 @@ public class ConsumidorController {
             consumidorRepository.save(consumidor);
 
             return ResponseEntity.ok(new ConsumidorModel(consumidor));
-        } catch (JsonProcessingException e) {
-            System.out.println("erro ao converter json"+e.getMessage());
-            return ResponseEntity.badRequest().body("Invalid JSON format");
         } catch (Exception e) {
             System.out.println("outro erro"+e.getMessage());
             return ResponseEntity.internalServerError().body("Error updating profile");

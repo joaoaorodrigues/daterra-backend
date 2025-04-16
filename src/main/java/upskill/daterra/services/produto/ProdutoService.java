@@ -14,7 +14,7 @@ public interface ProdutoService {
 
     Produto atualizarProduto(Long id, Long produtorId, Produto produto, MultipartFile arquivo);
 
-    void apagarProduto(Long id, Long produtorId);
+    void apagarProduto(Long productId);
 
     List<Category> getCategories();
 

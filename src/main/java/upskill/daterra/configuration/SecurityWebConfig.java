@@ -47,6 +47,7 @@ public class SecurityWebConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login/**", "/produtores/**", "/teste/**", "/session-check").permitAll()
+                                .requestMatchers("/consumidor/**").hasAnyRole("CONSUMIDOR")
                                 .requestMatchers("/**").permitAll()
 //                        .requestMatchers("/admin/", "/admin/**").hasAuthority("ROLE_ADMIN")
 //                        .requestMatchers("/produtor/**").hasAuthority("ROLE_PRODUTOR")

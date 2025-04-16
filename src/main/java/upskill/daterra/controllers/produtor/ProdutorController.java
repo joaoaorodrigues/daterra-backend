@@ -38,7 +38,7 @@ public class ProdutorController {
                 .filter(produtor -> produtor.getId() != null)
                 .map(produtor -> {
                     ProdutorModel model = new ProdutorModel(produtor);
-                    System.out.println("modelo produtor:"+model);
+                    System.out.println("modelo produtor:" + model);
                     return ResponseEntity.ok(model);
                 })
                 .orElseGet(() -> {
@@ -46,12 +46,12 @@ public class ProdutorController {
                 });
     }
 
-    @PutMapping(value= "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateProfile(
-            @RequestPart ("userData") String userDataJson,
-            @RequestPart(value="profileImage", required = false)MultipartFile profileImage,
-            @RequestPart(value="coverImage", required = false) MultipartFile coverImage
-            ) {
+            @RequestPart("userData") String userDataJson,
+            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
+            @RequestPart(value = "coverImage", required = false) MultipartFile coverImage
+    ) {
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -95,14 +95,11 @@ public class ProdutorController {
 
             return ResponseEntity.ok(new ProdutorModel(produtor));
         } catch (JsonProcessingException e) {
-            System.out.println("erro ao converter json"+e.getMessage());
+            System.out.println("erro ao converter json" + e.getMessage());
             return ResponseEntity.badRequest().body("Invalid JSON format");
         } catch (Exception e) {
-            System.out.println("outro erro"+e.getMessage());
+            System.out.println("outro erro" + e.getMessage());
             return ResponseEntity.internalServerError().body("Error updating profile");
         }
     }
-
-
-
 }

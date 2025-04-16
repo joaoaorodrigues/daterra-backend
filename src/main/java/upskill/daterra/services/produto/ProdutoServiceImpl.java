@@ -37,12 +37,12 @@ public class ProdutoServiceImpl implements ProdutoService {
         return produtoRepository.findByProdutorId(produtorId);
     }
 
-    public Optional<Produto> procurarProdutoPorIdEProdutor(Long id, Long produtorId) {
-        return produtoRepository.findByIdAndProdutorId(id, produtorId);
+    public Optional<Produto> procurarProdutoPorId(Long id, Long produtorId) {
+        return produtoRepository.findById(id);
     }
 
     public Produto atualizarProduto(Long id, Long produtorId, Produto produtoAtualizado, MultipartFile productImage) {
-        return produtoRepository.findByIdAndProdutorId(id, produtorId)
+        return produtoRepository.findById(id)
                 .map(produto -> {
                     produto.setName(produtoAtualizado.getName());
                     produto.setDescription(produtoAtualizado.getDescription());
@@ -61,8 +61,8 @@ public class ProdutoServiceImpl implements ProdutoService {
                 }).orElseThrow(() -> new RuntimeException("Produto não encontrado ou não tem permissão para editar."));
     }
 
-    public void apagarProduto(Long id, Long produtorId) {
-        Produto produto = produtoRepository.findByIdAndProdutorId(id, produtorId)
+    public void apagarProduto(Long productId) {
+        Produto produto = produtoRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado ou não tem permissão para remover."));
         produtoRepository.delete(produto);
     }
@@ -72,7 +72,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     public Optional<Produto> getProduto(Long productId, Long produtorId){
-        return produtoRepository.findByIdAndProdutorId(productId, produtorId);
+        return produtoRepository.findById(productId);
     }
 
 }

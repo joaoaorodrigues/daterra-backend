@@ -12,9 +12,11 @@ import upskill.daterra.entities.Category;
 import upskill.daterra.entities.Produto;
 import upskill.daterra.entities.Produtor;
 import upskill.daterra.models.ProdutoModel;
+import upskill.daterra.models.auth_models.ProdutorModel;
 import upskill.daterra.repositories.CategoryRepository;
 import upskill.daterra.repositories.ProdutoRepository;
 import upskill.daterra.repositories.ProdutorRepository;
+import upskill.daterra.services.guest.ProdutoresService;
 import upskill.daterra.services.image.ImageService;
 import upskill.daterra.services.produto.ProdutoService;
 
@@ -37,6 +39,9 @@ public class ProdutoController {
 
     @Autowired
     private ProdutorRepository produtorRepository;
+
+    @Autowired
+    private ProdutoresService produtoresService;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -91,13 +96,27 @@ public class ProdutoController {
         }
     }
 
-    @GetMapping("/{produtorId}")
-    public ResponseEntity<List<Produto>> listarProdutos(@PathVariable Long produtorId) {
-        return ResponseEntity.ok(produtoService.listarProdutosPorProdutor(produtorId));
+    @GetMapping("/listar")
+    public ResponseEntity<List<Produto>> listarProdutos() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Optional<Produtor> optionalProdutor = produtorRepository.findByEmail(email);
+
+        if (optionalProdutor == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Produtor produtor = optionalProdutor.get();
+        List<Produto> produtos = produtoRepository.findByProdutorId(produtor.getId());
+
+        if (produtos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(produtos);
     }
 
-    @PutMapping(value = "/{produtoId}/atualizar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> atualizarProduto(
+    @PutMapping(value = "/update/{produtoId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateProduto(
             @RequestPart("userData") String userDataJson,
             @PathVariable Long produtoId,
             @RequestPart(value = "productImage", required = false) MultipartFile productImage
@@ -108,7 +127,7 @@ public class ProdutoController {
             return ResponseEntity.notFound().build();
         }
 
-        Optional<Produto> optionalProduto = produtoRepository.findByIdAndProdutorId(produtoId, optionalProdutor.get().getId());
+        Optional<Produto> optionalProduto = produtoRepository.findById(produtoId);
         if (optionalProduto.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -140,9 +159,9 @@ public class ProdutoController {
         }
     }
 
-    @DeleteMapping("/deletar/{produtorId}/{id}")
-    public ResponseEntity<String> deletarProduto(@PathVariable Long produtorId, @PathVariable Long id) {
-        produtoService.apagarProduto(id, produtorId);
+    @DeleteMapping("/apagar/{productId}")
+    public ResponseEntity<String> apagarProduto(@PathVariable Long productId) {
+        produtoService.apagarProduto(productId);
         return ResponseEntity.ok("Produto removido com sucesso");
     }
 }
