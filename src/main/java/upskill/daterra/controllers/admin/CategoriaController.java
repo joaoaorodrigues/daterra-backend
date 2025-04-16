@@ -45,45 +45,18 @@ public class CategoriaController {
 
     @PostConstruct
     public void initializeCategories() {
-        Map<Long, String> categoriesMap = Map.of(
-                1L, "Biológico",
-                2L, "Frutas",
-                3L, "Hortícolas",
-                4L, "Vinhos",
-                5L, "Apícolas",
-                6L, "Ervas e Especiarias",
-                7L, "Processados"
+        if(categoryRepository.count() != 0) return;
+
+        List<Category> categoriesList = Arrays.asList(
+                new Category("Hortícolas", "#95BC80"),
+                new Category("Frutas", "#95BC80"),
+                new Category("Vinhos", "#95BC80"),
+                new Category("Apícolas", "#D5CAF7"),
+                new Category("Ervas , e Especiarias", "#F9D537"),
+                new Category("Processados", "#95BC80"),
+                new Category("Biológico", "#F9D537")
         );
 
-        for (Map.Entry<Long, String> entry : categoriesMap.entrySet()) {
-            Long id = entry.getKey();
-            String categoryName = entry.getValue();
-
-            if (!categoryRepository.existsByName(categoryName)) {
-                Category category = new Category();
-                category.setId(id);
-                category.setName(categoryName);
-                categoryRepository.save(category);
-            }
-        }
+        categoryRepository.saveAll(categoriesList);
     }
-//    public void initializeCategories() {
-//        List<String> categoriesList = Arrays.asList(
-//                "Hortícolas",
-//                "Frutas",
-//                "Vinhos",
-//                "Apícolas",
-//                "Ervas e Especiarias",
-//                "Processados",
-//                "Biológico"
-//        );
-//
-//        for (String categoryName : categoriesList) {
-//            if (!categoryRepository.existsByName(categoryName)) {
-//                Category category = new Category();
-//                category.setName(categoryName);
-//                categoryRepository.save(category);
-//            }
-//        }
-//    }
 }

@@ -7,7 +7,6 @@ import upskill.daterra.entities.Produtor;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ProdutorModel {
 
@@ -22,7 +21,7 @@ public class ProdutorModel {
     private String region;
     private String country;
     private String postalCode;
-    private List<Long> categories;
+    private List<Category> categories;
     private String nif;
     private boolean isApproved;
     private boolean hasDeliveryOption;
@@ -52,9 +51,7 @@ public class ProdutorModel {
         this.region=produtor.getRegion();
         this.country = produtor.getCountry();
         this.postalCode = produtor.getPostalCode();
-        this.categories = produtor.getCategories().stream()
-                .map(Category::getId)
-                .collect(Collectors.toList());
+        this.categories = produtor.getCategories();
         this.nif = produtor.getNif();
         this.isApproved = produtor.isApproved();
         this.hasDeliveryOption = produtor.hasDeliveryOption();
@@ -141,11 +138,11 @@ public class ProdutorModel {
         this.postalCode = postalCode;
     }
 
-    public List<Long> getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Long> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 

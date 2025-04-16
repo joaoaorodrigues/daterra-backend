@@ -56,7 +56,7 @@ public class ProdutoController {
             @RequestParam("description") String description,
             @RequestParam("price") Double price,
             @RequestParam("quantity") Integer quantity,
-            @RequestParam("categories") List<Long> categories,
+            @RequestParam("categories") List<Category> categories,
             @RequestPart(value = "productImageUrl", required = false) MultipartFile productImage,
             HttpServletRequest request) throws IOException {
 
@@ -75,17 +75,7 @@ public class ProdutoController {
             produto.setPrice(price);
             produto.setQuantity(quantity);
             produto.setProdutor(optionalProdutor.get());
-
-            List<Category> productCategories = new ArrayList<>();
-            if (categories != null) {
-                for (Long categoryId : categories) {
-                    Category category = categoryRepository.findById(categoryId).orElse(null);
-                    if (category != null) {
-                        productCategories.add(category);
-                    }
-                }
-            }
-            produto.setCategories(productCategories);
+            produto.setCategories(categories);
 
             if (productImage != null && !productImage.isEmpty()) {
                 String productImagePath = imageService.storeImageFile(productImage);
@@ -133,8 +123,7 @@ public class ProdutoController {
             produto.setDescription(produtoModel.getDescription());
             produto.setPrice(produtoModel.getPrice());
             produto.setQuantity(produtoModel.getQuantity());
-            List<Category> categories = categoryRepository.findAllById(produtoModel.getCategories());
-            produto.setCategories(categories);
+            produto.setCategories(produtoModel.getCategories());
 
             if (productImage != null && !productImage.isEmpty()) {
                 String imageUrl = imageService.storeImageFile(productImage);

@@ -4,7 +4,6 @@ import upskill.daterra.entities.Category;
 import upskill.daterra.entities.Produto;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ProdutoModel {
     private String name;
@@ -12,7 +11,7 @@ public class ProdutoModel {
     private Double price;
     private Integer quantity;
     private String productImageUrl;
-    private List<Long> categories;
+    private List<Category> categories;
 
 
     public ProdutoModel() {
@@ -24,9 +23,7 @@ public class ProdutoModel {
         this.price = produto.getPrice();
         this.quantity = produto.getQuantity();
         this.productImageUrl = produto.getProductImageUrl();
-        this.categories = produto.getCategories().stream()
-                .map(Category::getId)
-                .collect(Collectors.toList());
+        this.categories = produto.getCategories();
     }
 
 
@@ -71,13 +68,11 @@ public class ProdutoModel {
         this.productImageUrl = productImageUrl;
     }
 
-
-    public List<Long> getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Long> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
-
 }

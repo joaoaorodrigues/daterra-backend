@@ -111,7 +111,9 @@ public class RegistrationServiceImpl implements RegistrationService {
         produtor.setOrganicCertificate(model.getOrganicCertificate());
         produtor.setDescription(model.getDescription());
         String defaultProfileImageUrl = "profile-default.svg";
+        String defaultCoverImageUrl = "cover-default.svg";
         produtor.setProfileImageUrl(defaultProfileImageUrl);
+        produtor.setCoverImageUrl(defaultCoverImageUrl);
 
         List<Category> categories = new ArrayList<>();
         if (model.getCategories() != null) {

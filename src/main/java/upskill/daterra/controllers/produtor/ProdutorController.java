@@ -79,9 +79,7 @@ public class ProdutorController {
             produtor.setHasPickupOption(produtorModel.isHasPickupOption());
             produtor.setHasDeliveryOption(produtorModel.isHasDeliveryOption());
             produtor.setOrganicCertificate(produtorModel.getOrganicCertificate());
-
-            List<Category> categories = categoryRepository.findAllById(produtorModel.getCategories());
-            produtor.setCategories(categories);
+            produtor.setCategories(produtorModel.getCategories());
 
             if (profileImage != null && !profileImage.isEmpty()) {
                 String profileImageUrl = imageService.storeImageFile(profileImage);

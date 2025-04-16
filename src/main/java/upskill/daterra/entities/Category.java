@@ -12,6 +12,23 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
+    private String color;
+
+    public Category() {
+    }
+
+    public Category(String name, String color) {
+        this.name = name;
+        this.color = color;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 
     public Long getId() { return id; }
 

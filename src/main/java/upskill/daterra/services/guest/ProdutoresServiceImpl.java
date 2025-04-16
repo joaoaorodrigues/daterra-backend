@@ -11,7 +11,6 @@ import upskill.daterra.repositories.ProdutorRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProdutoresServiceImpl implements ProdutoresService{
@@ -46,10 +45,7 @@ public class ProdutoresServiceImpl implements ProdutoresService{
             model.setIdProdutor(produtor.getId());
             model.setBusinessName(produtor.getBusinessName());
             model.setAddress(produtor.getAddress());
-            List categories = produtor.getCategories().stream()
-                    .map(Category::getId)
-                    .collect(Collectors.toList());
-            model.setCategories(categories);
+            model.setCategories(produtor.getCategories());
             model.setLatitude(produtor.getLatitude() != null ? produtor.getLatitude() : 0.0);
             model.setLongitude(produtor.getLongitude() != null ? produtor.getLongitude() : 0.0);
 
