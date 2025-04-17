@@ -1,62 +1,23 @@
 package upskill.daterra.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
 import upskill.daterra.entities.Category;
-import upskill.daterra.entities.Produtor;
-import upskill.daterra.entities.User;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class UpdateProdutorModel {
-
-    private String tipoUtilizador;
-    private String email;
-    private String businessName;
     private String firstName;
     private String lastName;
     private String phone;
     private String address;
     private String city;
     private String region;
-    private String country;
     private String postalCode;
-    private List<Long> categories;
-    private String nif;
-    private boolean isApproved;
+    private String businessName;
+    private String description;
     private boolean hasDeliveryOption;
     private boolean hasPickupOption;
-    private String description;
     private String organicCertificate;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate birthDate;
-
-
-    public UpdateProdutorModel() {
-    }
-
-
-    public String getTipoUtilizador() {
-        return tipoUtilizador;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getBusinessName() {
-        return businessName;
-    }
-
-    public void setBusinessName(String businessName) {
-        this.businessName = businessName;
-    }
+    private List<Category> categories;
 
     public String getFirstName() {
         return firstName;
@@ -98,12 +59,12 @@ public class UpdateProdutorModel {
         this.city = city;
     }
 
-    public String getCountry() {
-        return country;
+    public String getRegion() {
+        return region;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public String getPostalCode() {
@@ -114,28 +75,20 @@ public class UpdateProdutorModel {
         this.postalCode = postalCode;
     }
 
-    public List<Long> getCategories() {
-        return categories;
+    public String getBusinessName() {
+        return businessName;
     }
 
-    public void setCategories(List<Long> categories) {
-        this.categories = categories;
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
     }
 
-    public String getNif() {
-        return nif;
+    public String getDescription() {
+        return description;
     }
 
-    public void setNif(String nif) {
-        this.nif = nif;
-    }
-
-    public boolean isApproved() {
-        return isApproved;
-    }
-
-    public void setApproved(boolean approved) {
-        isApproved = approved;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public boolean isHasDeliveryOption() {
@@ -154,22 +107,6 @@ public class UpdateProdutorModel {
         this.hasPickupOption = hasPickupOption;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
     public String getOrganicCertificate() {
         return organicCertificate;
     }
@@ -178,12 +115,11 @@ public class UpdateProdutorModel {
         this.organicCertificate = organicCertificate;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }
-

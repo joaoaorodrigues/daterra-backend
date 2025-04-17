@@ -43,20 +43,4 @@ public class CategoriaController {
         return ResponseEntity.ok("Categoria removida com sucesso.");
     }
 
-    @PostConstruct
-    public void initializeCategories() {
-        if(categoryRepository.count() != 0) return;
-
-        List<Category> categoriesList = Arrays.asList(
-                new Category("Hortícolas", "#95BC80"),
-                new Category("Frutas", "#95BC80"),
-                new Category("Vinhos", "#95BC80"),
-                new Category("Apícolas", "#D5CAF7"),
-                new Category("Ervas , e Especiarias", "#F9D537"),
-                new Category("Processados", "#95BC80"),
-                new Category("Biológico", "#F9D537")
-        );
-
-        categoryRepository.saveAll(categoriesList);
-    }
 }
