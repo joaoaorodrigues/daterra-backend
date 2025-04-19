@@ -11,14 +11,19 @@ public class AppReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "texto")
-    private String mensagem;
+
 
     @Column(name = "nome_remetente")
     private String nomeAutor;
 
     @Column(name = "data")
     private LocalDate dataCriacao;
+
+    @Column(name = "assunto")
+    private String assunto;
+
+    @Column(name = "texto")
+    private String mensagem;
 
     private Boolean visto = false;
 
@@ -50,6 +55,14 @@ public class AppReport {
 
     public LocalDate getDataCriacao() {
         return dataCriacao;
+    }
+
+    public String getAssunto() {
+        return assunto;
+    }
+
+    public void setAssunto(String assunto) {
+        this.assunto = assunto;
     }
 
     public void setDataCriacao(LocalDate dataCriacao) {
