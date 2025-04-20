@@ -1,7 +1,6 @@
 package upskill.daterra.entities;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 @Entity
@@ -11,7 +10,21 @@ public class AppReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "autor_id")
+    private User autor;
 
+    public User getAutor() {
+        return autor;
+    }
+
+    public void setAutor(User autor) {
+        this.autor = autor;
+    }
+
+    public String getAutorEmail() {
+        return autor != null ? autor.getEmail() : null;
+    }
 
     @Column(name = "nome_remetente")
     private String nomeAutor;
@@ -85,5 +98,3 @@ public class AppReport {
         this.resolucao = resolucao;
     }
 }
-
-

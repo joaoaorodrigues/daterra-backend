@@ -1,25 +1,20 @@
-package upskill.daterra.controllers.consumidor;
+package upskill.daterra.controllers.produtor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import upskill.daterra.entities.AppReport;
+import upskill.daterra.entities.User;
 import upskill.daterra.repositories.AppReportRepository;
-
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import upskill.daterra.entities.User;
-
 
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/cliente/reports")
-public class ConsumidorReportController {
+@RequestMapping("/produtor/reports")
+public class ProdutorReportController {
 
     @Autowired
     private AppReportRepository reportRepo;
