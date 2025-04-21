@@ -8,7 +8,10 @@ public class ProdutorMapInfo {
 
     private Long idProdutor;
     private String businessName;
+    private String profilePictureUrl;
     private String address;
+    private String city;
+    private String region;
     private List<Category> categories;
     private double latitude;
     private double longitude;
@@ -37,6 +40,22 @@ public class ProdutorMapInfo {
         this.address = address;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
     public double getLatitude() {
         return latitude;
     }
@@ -60,4 +79,15 @@ public class ProdutorMapInfo {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
+    }
+
+
+
 }

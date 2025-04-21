@@ -1,6 +1,7 @@
 package upskill.daterra.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -78,14 +79,16 @@ public class Produtor extends User {
         isApproved = approved;
     }
 
+    @JsonProperty("hasDeliveryOption")
     public boolean hasDeliveryOption() {
         return hasDeliveryOption;
     }
 
     public void setHasDeliveryOption(boolean hasDeliveryOption) {
+
         this.hasDeliveryOption = hasDeliveryOption;
     }
-
+    @JsonProperty("hasPickupOption")
     public boolean hasPickupOption() {
         return hasPickupOption;
     }

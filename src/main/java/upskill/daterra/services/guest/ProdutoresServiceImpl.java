@@ -44,7 +44,10 @@ public class ProdutoresServiceImpl implements ProdutoresService{
 
             model.setIdProdutor(produtor.getId());
             model.setBusinessName(produtor.getBusinessName());
+            model.setProfilePictureUrl(produtor.getProfileImageUrl());
             model.setAddress(produtor.getAddress());
+            model.setCity(produtor.getCity());
+            model.setRegion(produtor.getRegion());
             model.setCategories(produtor.getCategories());
             model.setLatitude(produtor.getLatitude() != null ? produtor.getLatitude() : 0.0);
             model.setLongitude(produtor.getLongitude() != null ? produtor.getLongitude() : 0.0);

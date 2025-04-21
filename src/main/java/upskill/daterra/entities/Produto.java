@@ -13,6 +13,7 @@ public class Produto {
     private String name;
     private String description;
     private Double price;
+    private String pricingUnit;
     private Integer quantity;
     private String ProductImageUrl;
 
@@ -60,5 +61,13 @@ public class Produto {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public String getPricingUnit() {
+        return pricingUnit;
+    }
+
+    public void setPricingUnit(String pricingUnit) {
+        this.pricingUnit = pricingUnit;
     }
 }

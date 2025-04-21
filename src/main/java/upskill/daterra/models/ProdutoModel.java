@@ -9,6 +9,7 @@ public class ProdutoModel {
     private String name;
     private String description;
     private Double price;
+    private String pricingUnit;
     private Integer quantity;
     private String productImageUrl;
     private List<Category> categories;
@@ -21,6 +22,7 @@ public class ProdutoModel {
         this.name = produto.getName();
         this.description = produto.getDescription();
         this.price = produto.getPrice();
+        this.pricingUnit = produto.getPricingUnit();
         this.quantity = produto.getQuantity();
         this.productImageUrl = produto.getProductImageUrl();
         this.categories = produto.getCategories();
@@ -74,5 +76,13 @@ public class ProdutoModel {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public String getPricingUnit() {
+        return pricingUnit;
+    }
+
+    public void setPricingUnit(String pricingUnit) {
+        this.pricingUnit = pricingUnit;
     }
 }

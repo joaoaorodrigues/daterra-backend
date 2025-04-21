@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import upskill.daterra.entities.Category;
 import upskill.daterra.entities.Produto;
 import upskill.daterra.entities.Produtor;
+import upskill.daterra.entities.User;
 import upskill.daterra.models.ProdutoModel;
 import upskill.daterra.models.auth_models.ProdutorModel;
 import upskill.daterra.repositories.CategoryRepository;
@@ -60,6 +61,7 @@ public class ProdutoController {
             @RequestParam("name") String name,
             @RequestParam("description") String description,
             @RequestParam("price") Double price,
+            @RequestParam("pricingUnit") String pricingUnit,
             @RequestParam("quantity") Integer quantity,
             @RequestParam("categories") List<Category> categories,
             @RequestPart(value = "productImageUrl", required = false) MultipartFile productImage,
@@ -69,7 +71,7 @@ public class ProdutoController {
         System.out.println("Categories : " + categories);
         System.out.println("Product image : " + (productImage != null ? productImage.getOriginalFilename() : "sem imagem"));
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail();
         Optional<Produtor> optionalProdutor = produtorRepository.findByEmail(email);
 
         try {
@@ -78,6 +80,7 @@ public class ProdutoController {
             produto.setName(name);
             produto.setDescription(description);
             produto.setPrice(price);
+            produto.setPricingUnit(pricingUnit);
             produto.setQuantity(quantity);
             produto.setProdutor(optionalProdutor.get());
             produto.setCategories(categories);
@@ -91,15 +94,14 @@ public class ProdutoController {
 
             return ResponseEntity.ok(produto);
         } catch (Exception e) {
-            System.out.println("outro erro"+e.getMessage());
+            System.out.println("Erro a adicionar produto: "+e.getMessage());
             return ResponseEntity.internalServerError().body("Error adding produto");
         }
     }
 
     @GetMapping("/listar")
     public ResponseEntity<List<Produto>> listarProdutos() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-
+        String email = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail();
         Optional<Produtor> optionalProdutor = produtorRepository.findByEmail(email);
 
         if (optionalProdutor == null) {
@@ -121,7 +123,9 @@ public class ProdutoController {
             @PathVariable Long produtoId,
             @RequestPart(value = "productImage", required = false) MultipartFile productImage
     ) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        //String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail();
+
         Optional<Produtor> optionalProdutor = produtorRepository.findByEmail(email);
         if (optionalProdutor.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -141,6 +145,7 @@ public class ProdutoController {
             produto.setName(produtoModel.getName());
             produto.setDescription(produtoModel.getDescription());
             produto.setPrice(produtoModel.getPrice());
+            produto.setPricingUnit(produtoModel.getPricingUnit());
             produto.setQuantity(produtoModel.getQuantity());
             produto.setCategories(produtoModel.getCategories());
 
