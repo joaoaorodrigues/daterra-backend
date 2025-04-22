@@ -119,7 +119,7 @@ public class ProdutoController {
 
     @PutMapping(value = "/update/{produtoId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateProduto(
-            @RequestPart("userData") String userDataJson,
+            @ModelAttribute ProdutoModel produtoModel,
             @PathVariable Long produtoId,
             @RequestPart(value = "productImage", required = false) MultipartFile productImage
     ) {
@@ -137,8 +137,6 @@ public class ProdutoController {
         }
 
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            ProdutoModel produtoModel = objectMapper.readValue(userDataJson, ProdutoModel.class);
 
             Produto produto = optionalProduto.get();
 
@@ -157,9 +155,7 @@ public class ProdutoController {
             produtoRepository.save(produto);
 
             return ResponseEntity.ok(produto);
-        } catch (JsonProcessingException e) {
-            return ResponseEntity.badRequest().body("Invalid JSON format");
-        } catch (Exception e) {
+         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Error updating product");
         }
     }
