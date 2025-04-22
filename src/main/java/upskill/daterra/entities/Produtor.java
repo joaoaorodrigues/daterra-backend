@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -39,6 +40,7 @@ public class Produtor extends User {
 
     private String profileImageUrl;
     private String coverImageUrl;
+    private LocalDate creationDate = LocalDate.now();
 
     public Double getLatitude() {
         return latitude;
@@ -127,6 +129,14 @@ public class Produtor extends User {
 
     public void setCoverImageUrl(String coverImageUrl) {
         this.coverImageUrl = coverImageUrl;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
     }
 
     @Override

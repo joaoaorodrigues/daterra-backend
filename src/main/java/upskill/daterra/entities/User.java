@@ -29,7 +29,7 @@ public class User implements Serializable {
     protected Long id;
 
     @Column(unique = true)
-    @JsonIgnore
+
     protected String email;
     @JsonIgnore
     protected String password;
