@@ -10,6 +10,7 @@ import java.util.List;
 
 public class ProdutorModel {
 
+    private Long id;
     private String tipoUtilizador;
     private String email;
     private String businessName;
@@ -39,6 +40,7 @@ public class ProdutorModel {
     }
 
     public ProdutorModel(Produtor produtor) {
+        this.id = produtor.getId();
         this.tipoUtilizador = produtor.getClass().getSimpleName().toLowerCase();
         this.email = produtor.getEmail();
         this.businessName = produtor.getBusinessName();
@@ -224,5 +226,13 @@ public class ProdutorModel {
 
     public void setCoverImageUrl(String coverImageUrl) {
         this.coverImageUrl = coverImageUrl;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

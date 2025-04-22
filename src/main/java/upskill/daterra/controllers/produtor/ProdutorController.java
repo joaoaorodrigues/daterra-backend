@@ -7,18 +7,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import upskill.daterra.entities.Category;
-import upskill.daterra.entities.Consumidor;
-import upskill.daterra.entities.Produtor;
-import upskill.daterra.entities.User;
+import upskill.daterra.entities.*;
 import upskill.daterra.models.UpdateProdutorModel;
 import upskill.daterra.models.auth_models.ProdutorModel;
+import upskill.daterra.models.encomenda.DadosEncomenda;
 import upskill.daterra.repositories.CategoryRepository;
+import upskill.daterra.repositories.EncomendaRepository;
 import upskill.daterra.repositories.ProdutorRepository;
 import upskill.daterra.services.image.ImageService;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/produtor")
@@ -28,6 +30,8 @@ public class ProdutorController {
     private ProdutorRepository produtorRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private EncomendaRepository encomendaRepository;
     @Autowired
     private ImageService imageService;
 
@@ -156,6 +160,25 @@ public class ProdutorController {
         }
     }
 
+    @PatchMapping("/encomendas/{id}/fulfill")
+    public ResponseEntity<?> despacharEncomenda(@PathVariable Long id) {
+        Encomenda encomenda = encomendaRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        encomenda.setFulfilled(true);
+        encomendaRepository.save(encomenda);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/encomendas")
+    public List<DadosEncomenda> listarEncomendas(){
+        List<Encomenda> encomendas = encomendaRepository.findAll();
+        List<DadosEncomenda> dadosEncomendas = encomendas.stream()
+                .map(encomenda -> new DadosEncomenda(encomenda))
+                .collect(Collectors.toList());
+        return dadosEncomendas;
+    }
 
 
 }

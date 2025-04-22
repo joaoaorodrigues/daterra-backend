@@ -10,13 +10,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import upskill.daterra.entities.Consumidor;
+import upskill.daterra.entities.Encomenda;
 import upskill.daterra.entities.User;
 import upskill.daterra.models.UpdateConsumidorModel;
 import upskill.daterra.models.auth_models.ConsumidorModel;
+import upskill.daterra.models.encomenda.DadosEncomenda;
+import upskill.daterra.models.encomenda.EncomendaModel;
 import upskill.daterra.repositories.ConsumidorRepository;
+import upskill.daterra.repositories.EncomendaRepository;
+import upskill.daterra.services.encomenda.EncomendaService;
 import upskill.daterra.services.image.ImageService;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/consumidor")
@@ -24,9 +31,12 @@ public class ConsumidorController {
 
     @Autowired
     private ConsumidorRepository consumidorRepository;
-
+    @Autowired
+    private EncomendaRepository encomendaRepository;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private EncomendaService encomendaService;
 
     @GetMapping("/perfil")
     public ResponseEntity<ConsumidorModel> getCurrentConsumidor() {
@@ -91,4 +101,41 @@ public class ConsumidorController {
             return ResponseEntity.internalServerError().body("Error updating profile");
         }
     }
+
+    // criar encomendas:
+    @PostMapping("/encomendas")
+    public ResponseEntity<?> criarEncomendas(@RequestBody List<EncomendaModel> encomendasModel) {
+        return encomendaService.processarEncomendas(encomendasModel);
+    }
+
+    // dados de encomenda efetuada:
+    @GetMapping("/encomendas")
+    public List<DadosEncomenda> getEncomendasByIds(@RequestParam List<Long> ids) {
+        return encomendaRepository.findAllById(ids)
+                .stream().map(DadosEncomenda::new).collect(Collectors.toList());
+    }
+
+    // historico de encomendas:
+    @GetMapping("/historico-encomendas")
+    public List<DadosEncomenda> listarEncomendas(){
+        List<Encomenda> encomendas = encomendaRepository.findAll();
+        List<DadosEncomenda> dadosEncomendas = encomendas.stream()
+                .map(encomenda -> new DadosEncomenda(encomenda))
+                .collect(Collectors.toList());
+        return dadosEncomendas;
+    }
+
+    // dados de encomenda por id:
+    @GetMapping("/encomenda/{id}")
+    public ResponseEntity<DadosEncomenda> getEncomenda(@PathVariable Long id){
+        Optional<Encomenda> optionalEncomenda = encomendaRepository.findById(id);
+        if (optionalEncomenda.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Encomenda encomenda = optionalEncomenda.get();
+        DadosEncomenda dadosEncomenda = new DadosEncomenda(encomenda);
+        return ResponseEntity.ok(dadosEncomenda);
+    }
+
+
 }
