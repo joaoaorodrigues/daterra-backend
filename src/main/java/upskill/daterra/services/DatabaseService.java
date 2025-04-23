@@ -196,8 +196,8 @@ public class DatabaseService {
                         true
                 ),
                 createProdutor(
-                        "Processados do Norte",
-                        "processadosnorte@teste.pt",
+                        "Compotas de Matosinhos",
+                        "compotasmatosinhos@teste.pt",
                         "123",
                         "Produção artesanal de compotas e conservas em Porto.",
                         "Matosinhos",
