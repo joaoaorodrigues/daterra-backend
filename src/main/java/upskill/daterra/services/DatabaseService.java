@@ -7,14 +7,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import upskill.daterra.entities.Admin;
 import upskill.daterra.entities.Category;
+import upskill.daterra.entities.Produto;
 import upskill.daterra.entities.Produtor;
 import upskill.daterra.repositories.AdminRepository;
 import upskill.daterra.repositories.CategoryRepository;
+import upskill.daterra.repositories.ProdutoRepository;
 import upskill.daterra.repositories.ProdutorRepository;
+import upskill.daterra.services.produto.ProdutoSamples;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class DatabaseService {
@@ -31,11 +33,15 @@ public class DatabaseService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
     @PostConstruct
     @Transactional
     public void initializeData() {
         initializeCategories();
         initializeProdutores();
+        initializeProdutos();
         initializeAdmin();
     }
 
@@ -277,6 +283,54 @@ public class DatabaseService {
 
         return produtor;
     }
+
+
+    private void initializeProdutos() {
+        if (produtoRepository.count() != 0) return;
+
+        List<Produtor> approvedProdutores = produtorRepository.findApprovedWithCategories();
+        List<Produto> produtos = new ArrayList<>();
+
+        for (Produtor produtor : approvedProdutores) {
+            Set<Produto> produtosGerados = new HashSet<>();
+
+            for (Category categoria : produtor.getCategories()) {
+                List<Produto> listaCategoria = ProdutoSamples.getSamplesForCategory(categoria.getName());
+
+                if (categoria.getName().equals("Frutas") &&
+                        !(produtor.getRegion().contains("Madeira") || produtor.getRegion().contains("Açores"))) {
+                    listaCategoria = listaCategoria.stream()
+                            .filter(p -> !p.getName().toLowerCase().contains("banana"))
+                            .toList();
+                }
+
+
+                listaCategoria = new ArrayList<>(listaCategoria);
+                Collections.shuffle(listaCategoria);
+                for (Produto sample : listaCategoria) {
+                    if (produtosGerados.size() >= 6) break;
+                    Produto produto = new Produto();
+                    produto.setName(sample.getName());
+                    produto.setDescription(sample.getDescription());
+                    produto.setPrice(sample.getPrice());
+                    produto.setPricingUnit(sample.getPricingUnit());
+                    produto.setQuantity((int) (Math.random() * 30 + 5));
+                    produto.setProductImageUrl(sample.getProductImageUrl());
+                    produto.setCategories(List.of(categoria));
+                    produto.setProdutor(produtor);
+                    produtosGerados.add(produto);
+                }
+
+                if (produtosGerados.size() >= 6) break;
+            }
+
+            produtos.addAll(produtosGerados);
+        }
+
+        produtoRepository.saveAll(produtos);
+    }
+
+
 
     private void initializeAdmin() {
 

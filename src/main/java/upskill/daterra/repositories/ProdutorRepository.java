@@ -1,6 +1,7 @@
 package upskill.daterra.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import upskill.daterra.entities.Produtor;
 
 import java.util.List;
@@ -13,5 +14,9 @@ public interface ProdutorRepository extends JpaRepository<Produtor, Long> {
     List<Produtor> findByIsApproved(boolean isApproved);
 
     long count();
+
+
+    @Query("SELECT p FROM Produtor p JOIN FETCH p.categories WHERE p.isApproved = true")
+    List<Produtor> findApprovedWithCategories();
 
 }
