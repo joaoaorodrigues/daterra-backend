@@ -1,7 +1,9 @@
 package upskill.daterra.entities;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("CONSUMIDOR")
@@ -11,6 +13,21 @@ public class Consumidor extends User {
 
     public String getProfileImageUrl() {
         return profileImageUrl;
+    }
+    @ManyToMany
+    @JoinTable(
+            name = "favoritos",
+            joinColumns = @JoinColumn(name = "consumidor_id"),
+            inverseJoinColumns = @JoinColumn(name = "produtor_id")
+    )
+    private List<Produtor> produtoresFavoritos = new ArrayList<>();
+
+    public List<Produtor> getProdutoresFavoritos() {
+        return produtoresFavoritos;
+    }
+
+    public void setProdutoresFavoritos(List<Produtor> produtoresFavoritos) {
+        this.produtoresFavoritos = produtoresFavoritos;
     }
 
     public void setProfileImageUrl(String profileImageUrl) {
