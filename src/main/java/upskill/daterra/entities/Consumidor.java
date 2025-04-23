@@ -10,10 +10,6 @@ import java.util.List;
 public class Consumidor extends User {
 
     private String profileImageUrl;
-
-    public String getProfileImageUrl() {
-        return profileImageUrl;
-    }
     @ManyToMany
     @JoinTable(
             name = "favoritos",
@@ -28,6 +24,11 @@ public class Consumidor extends User {
 
     public void setProdutoresFavoritos(List<Produtor> produtoresFavoritos) {
         this.produtoresFavoritos = produtoresFavoritos;
+    }
+
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
 
     public void setProfileImageUrl(String profileImageUrl) {
