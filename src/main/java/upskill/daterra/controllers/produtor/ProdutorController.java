@@ -172,17 +172,30 @@ public class ProdutorController {
     }
 
     @GetMapping("/encomendas")
-    public List<DadosEncomenda> listarEncomendas(@RequestParam(required = false) Boolean fulfilled) {
+    public ResponseEntity<List<DadosEncomenda>> listarEncomendas(
+            @RequestParam(required = false) Boolean fulfilled) {
+
+        String email = ((User) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal()).getEmail();
+
+        Optional<Produtor> optionalProdutor = produtorRepository.findByEmail(email);
+        if (optionalProdutor.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Produtor produtor = optionalProdutor.get();
+
         List<Encomenda> encomendas;
         if (fulfilled != null) {
-            encomendas = encomendaRepository.findByFulfilled(fulfilled);
+            encomendas = encomendaRepository.findByProdutorAndFulfilled(produtor, fulfilled);
         } else {
-            encomendas = encomendaRepository.findAll();
+            encomendas = encomendaRepository.findByProdutor(produtor);
         }
-        return encomendas.stream()
+
+        return ResponseEntity.ok(encomendas.stream()
                 .map(DadosEncomenda::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
+
 
     @PutMapping("/encomendas/{orderId}/fulfill")
     public ResponseEntity<Void> markEncomendaAsFulfilled(@PathVariable Long orderId) {
