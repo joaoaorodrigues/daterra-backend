@@ -16,11 +16,14 @@ public class DadosEncomenda {
     private DadosConsumidor consumidor;
     private List<DadosItemEncomenda> items;
 
+    private String address;
+
     public DadosEncomenda(){}
     public DadosEncomenda(Encomenda encomenda) {
         this.id = encomenda.getId();
         this.deliveryOptions = encomenda.getDeliveryOptions();
         this.dataEncomenda = encomenda.getDataEncomenda();
+        this.address = encomenda.getAddress();
         this.isFulfilled = encomenda.isFulfilled();
         this.consumidor = new DadosConsumidor(encomenda.getConsumidor());
         this.items = encomenda.getItems().stream()
@@ -74,5 +77,13 @@ public class DadosEncomenda {
 
     public void setItems(List<DadosItemEncomenda> items) {
         this.items = items;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

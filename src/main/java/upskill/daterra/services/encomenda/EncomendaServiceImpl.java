@@ -94,9 +94,6 @@ public class EncomendaServiceImpl implements EncomendaService{
 
         encomendaRepository.saveAll(encomendas);
 
-//        List<DadosEncomenda> resposta = encomendas.stream()
-//                .map(encomenda -> new DadosEncomenda(encomenda))
-//                .collect(Collectors.toList());
 
         List<Long> ids = encomendas.stream()
                 .map(Encomenda::getId)

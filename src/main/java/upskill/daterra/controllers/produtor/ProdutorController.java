@@ -172,12 +172,30 @@ public class ProdutorController {
     }
 
     @GetMapping("/encomendas")
-    public List<DadosEncomenda> listarEncomendas(){
-        List<Encomenda> encomendas = encomendaRepository.findAll();
-        List<DadosEncomenda> dadosEncomendas = encomendas.stream()
-                .map(encomenda -> new DadosEncomenda(encomenda))
+    public List<DadosEncomenda> listarEncomendas(@RequestParam(required = false) Boolean fulfilled) {
+        List<Encomenda> encomendas;
+        if (fulfilled != null) {
+            encomendas = encomendaRepository.findByFulfilled(fulfilled);
+        } else {
+            encomendas = encomendaRepository.findAll();
+        }
+        return encomendas.stream()
+                .map(DadosEncomenda::new)
                 .collect(Collectors.toList());
-        return dadosEncomendas;
+    }
+
+    @PutMapping("/encomendas/{orderId}/fulfill")
+    public ResponseEntity<Void> markEncomendaAsFulfilled(@PathVariable Long orderId) {
+        Optional<Encomenda> optionalEncomenda = encomendaRepository.findById(orderId);
+        if (optionalEncomenda.isPresent()) {
+            Encomenda encomenda = optionalEncomenda.get();
+            encomenda.setFulfilled(true);
+            encomendaRepository.save(encomenda);
+            System.out.println("encomenda fulfilled" + encomenda);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 

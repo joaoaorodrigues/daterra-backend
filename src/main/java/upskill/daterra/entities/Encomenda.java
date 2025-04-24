@@ -24,7 +24,8 @@ public class Encomenda {
     private List<ItemEncomenda> items = new ArrayList<>();
 
     private LocalDateTime dataEncomenda = LocalDateTime.now();
-    private boolean isFulfilled = false;
+    @Column(name = "is_fulfilled")
+    private boolean fulfilled;
     private String deliveryOptions;
 
     private String address;
@@ -72,11 +73,11 @@ public class Encomenda {
     }
 
     public boolean isFulfilled() {
-        return isFulfilled;
+        return fulfilled;
     }
 
     public void setFulfilled(boolean fulfilled) {
-        isFulfilled = fulfilled;
+        this.fulfilled = fulfilled;
     }
 
     public String getDeliveryOptions() {
