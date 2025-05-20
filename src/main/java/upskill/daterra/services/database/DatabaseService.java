@@ -1,4 +1,4 @@
-package upskill.daterra.services;
+package upskill.daterra.services.database;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import upskill.daterra.repositories.AdminRepository;
 import upskill.daterra.repositories.CategoryRepository;
 import upskill.daterra.repositories.ProdutoRepository;
 import upskill.daterra.repositories.ProdutorRepository;
-import upskill.daterra.services.produto.ProdutoSamples;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -49,13 +48,13 @@ public class DatabaseService {
         if (categoryRepository.count() != 0) return;
 
         List<Category> categories = Arrays.asList(
-                new Category("Hortícolas", "#95BC80"),
-                new Category("Frutas", "#95BC80"),
+                new Category("Hortícolas", "#0DBD61"),
+                new Category("Frutas", "#0DBD61"),
                 new Category("Apícolas", "#F9D537"),
                 new Category("Vinhos", "#D5CAF7"),
-                new Category("Ervas e Especiarias", "#95BC80"),
+                new Category("Ervas e Especiarias", "#0DBD61"),
                 new Category("Processados", "#F9D537"),
-                new Category("Biológico", "#95BC80")
+                new Category("Biológico", "#0DBD61")
         );
 
         categoryRepository.saveAll(categories);

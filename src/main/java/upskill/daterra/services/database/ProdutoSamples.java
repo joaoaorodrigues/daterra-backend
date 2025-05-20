@@ -1,4 +1,4 @@
-package upskill.daterra.services.produto;
+package upskill.daterra.services.database;
 
 import upskill.daterra.entities.Produto;
 
@@ -43,7 +43,7 @@ public class ProdutoSamples {
         samples.put("Ervas e Especiarias", List.of(
                 create("Manjericão Fresco", "Erva aromática ideal para pratos italianos", 1.00, "molho", "manjericao.jpg"),
                 create("Tomilho", "Tomilho fresco colhido na hora", 0.90, "molho", "tomilho.jpg"),
-                create("Orégãos", "Orégãos secos para temperos", 1.20, "frasco (50g)", "oregãos.jpg")
+                create("Orégãos", "Orégãos secos para temperos", 1.20, "frasco (50g)", "oregaos.jpg")
         ));
 
         samples.put("Processados", List.of(
